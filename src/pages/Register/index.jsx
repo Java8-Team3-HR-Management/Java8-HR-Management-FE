@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import "./toggle.css";
 
 const Register = () => {
   const [company, setCompany] = useState(false);
@@ -23,6 +25,48 @@ const Register = () => {
               <h3 className="account-title">Kayıt Ol</h3>
 
               <form action="index.html">
+                <div className=" form-check form-check-inline">
+                  <div className="onoffswitch-custom">
+                    <input
+                      type="checkbox"
+                      name="onoffswitch"
+                      className="onoffswitch-checkbox-custom"
+                      id="switch_sick"
+                      onChange={(e) => setCompany(!company)}
+                      checked={company}
+                    />
+                    <label
+                      className="onoffswitch-label-custom"
+                      htmlFor="switch_sick"
+                    >
+                      <span className="onoffswitch-inner-custom"></span>
+                      <span className="onoffswitch-switch-custom"></span>
+                    </label>
+                  </div>
+
+                  {/* <input
+                    className="  form-check-input checkBoxCss mb-3"
+                    type="checkbox"
+                    name="check"
+                    onChange={(e) => setCompany(!company)}
+                    checked={company}
+                  />
+                  <label className="form-check-label ">
+                    {company ? "Ziyaretçi" : "Şirket"}
+                  </label> */}
+                </div>
+                {company && (
+                  <>
+                    <div className="form-group">
+                      <label>Şirket Adı</label>
+                      <input className="form-control" type="password" />
+                    </div>
+                    <div className="form-group">
+                      <label>Vergi Numarası</label>
+                      <input className="form-control" type="password" />
+                    </div>
+                  </>
+                )}
                 <div className="form-group">
                   <label>Ad</label>
                   <input className="form-control" type="text" />
@@ -43,30 +87,6 @@ const Register = () => {
                   <label>Şifre Tekrarı</label>
                   <input className="form-control" type="password" />
                 </div>
-                <div className=" form-check form-check-inline">
-                  <input
-                    className="  form-check-input checkBoxCss mb-3"
-                    type="checkbox"
-                    name="check"
-                    onChange={(e) => setCompany(!company)}
-                    checked={company}
-                  />
-                  <label className="form-check-label ">
-                    {company ? "Ziyaretçi" : "Şirket"}
-                  </label>
-                </div>
-                {company && (
-                  <>
-                    <div className="form-group">
-                      <label>Şirket Adı</label>
-                      <input className="form-control" type="password" />
-                    </div>
-                    <div className="form-group">
-                      <label>Vergi Numarası</label>
-                      <input className="form-control" type="password" />
-                    </div>
-                  </>
-                )}
                 <div className="form-group text-center">
                   <button className="btn btn-primary account-btn" type="submit">
                     Kayıt Ol
@@ -74,7 +94,8 @@ const Register = () => {
                 </div>
                 <div className="account-footer">
                   <p>
-                    Already have an account? <a href="login.html">Login</a>
+                    Zaten bir hesabınız var mı ?{" "}
+                    <Link to="/login">Giriş Yap</Link>
                   </p>
                 </div>
               </form>
