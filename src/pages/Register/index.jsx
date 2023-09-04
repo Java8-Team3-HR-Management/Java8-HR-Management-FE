@@ -59,11 +59,15 @@ const Register = () => {
                   <>
                     <div className="form-group">
                       <label>Şirket Adı</label>
-                      <input className="form-control" type="password" />
+                      <input className="form-control" type="text" />
                     </div>
                     <div className="form-group">
                       <label>Vergi Numarası</label>
                       <input className="form-control" type="password" />
+                    </div>
+                    <div className="form-group">
+                      <label>Şirket Adresi</label>
+                      <input className="form-control" type="text" />
                     </div>
                   </>
                 )}
