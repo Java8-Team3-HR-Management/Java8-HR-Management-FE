@@ -7,17 +7,17 @@ const Register = () => {
   return (
     <div className="main-wrapper">
       <div className="account-content">
-        <a href="job-list.html" className="btn btn-primary apply-btn">
+        <Link to="/adminlogin" className="btn btn-primary apply-btn">
           Admin Girişi
-        </a>
+        </Link>
         <div className="container">
           <div className="account-logo">
-            <a href="index.html">
+            <Link to="#">
               <img
                 src="src/assets/img/logo2.png"
                 alt="Dreamguy's Technologies"
               />
-            </a>
+            </Link>
           </div>
 
           <div className="account-box">
@@ -59,15 +59,27 @@ const Register = () => {
                   <>
                     <div className="form-group">
                       <label>Şirket Adı</label>
-                      <input className="form-control" type="text" />
+                      <input
+                        className="form-control"
+                        type="text"
+                        name="companyName"
+                      />
                     </div>
                     <div className="form-group">
                       <label>Vergi Numarası</label>
-                      <input className="form-control" type="password" />
+                      <input
+                        className="form-control"
+                        type="text"
+                        name="taxNumber"
+                      />
                     </div>
                     <div className="form-group">
                       <label>Şirket Adresi</label>
-                      <input className="form-control" type="text" />
+                      <input
+                        className="form-control"
+                        type="text"
+                        name="companyAddress"
+                      />
                     </div>
                   </>
                 )}

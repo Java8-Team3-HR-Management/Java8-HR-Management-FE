@@ -1,34 +1,35 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const index = () => {
   return (
     <div className="header">
       <div className="header-left">
-        <a href="index.html" className="logo">
+        <Link a to="/company" className="logo">
           <img src="src/assets/img/logo.png" width="40" height="40" alt="" />
-        </a>
+        </Link>
       </div>
 
-      <a id="toggle_btn" href="javascript:void(0);">
+      <Link id="toggle_btn" to="/dashboard">
         <span className="bar-icon">
           <span></span>
           <span></span>
           <span></span>
         </span>
-      </a>
+      </Link>
 
       <div className="page-title-box">
-        <h3>Dreamguy's Technologies</h3>
+        <h3>İnsan Kaynakları Paneli</h3>
       </div>
 
-      <a id="mobile_btn" className="mobile_btn" href="#sidebar">
+      <Link id="mobile_btn" className="mobile_btn" to="#sidebar">
         <i className="fa fa-bars"></i>
-      </a>
+      </Link>
 
       <ul className="nav user-menu">
         <li className="nav-item dropdown has-arrow main-drop">
-          <a
-            href="#"
+          <Link
+            to="#"
             className="dropdown-toggle nav-link"
             data-toggle="dropdown"
           >
@@ -36,39 +37,39 @@ const index = () => {
               <img src="src/assets/img/profiles/avatar-21.jpg" alt="" />
             </span>
             <span>Admin</span>
-          </a>
+          </Link>
           <div className="dropdown-menu">
-            <a className="dropdown-item" href="profile.html">
-              My Profile
-            </a>
-            <a className="dropdown-item" href="settings.html">
-              Settings
-            </a>
-            <a className="dropdown-item" href="login.html">
-              Logout
-            </a>
+            <Link className="dropdown-item" to="profile.html">
+              <i className="la la-user"></i> <span>Profilim</span>
+            </Link>
+            <Link className="dropdown-item" to="settings.html">
+              Ayarlar
+            </Link>
+            <Link className="dropdown-item" to="login.html">
+              Çıkış
+            </Link>
           </div>
         </li>
       </ul>
       <div className="dropdown mobile-user-menu">
-        <a
-          href="#"
+        <Link
+          to="#"
           className="nav-link dropdown-toggle"
           data-toggle="dropdown"
           aria-expanded="false"
         >
           <i className="fa fa-ellipsis-v"></i>
-        </a>
+        </Link>
         <div className="dropdown-menu dropdown-menu-right">
-          <a className="dropdown-item" href="profile.html">
-            My Profile
-          </a>
-          <a className="dropdown-item" href="settings.html">
-            Settings
-          </a>
-          <a className="dropdown-item" href="login.html">
-            Logout
-          </a>
+          <Link className="dropdown-item" to="profile.html">
+            <i className="la la-user"></i> <span>Profilim</span>
+          </Link>
+          <Link className="dropdown-item" to="settings.html">
+            Ayarlar
+          </Link>
+          <Link className="dropdown-item" to="login.html">
+            Çıkış
+          </Link>
         </div>
       </div>
     </div>
