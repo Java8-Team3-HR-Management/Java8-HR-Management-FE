@@ -1,12 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const Login = () => {
+const AdminLogin = () => {
   return (
     <div className="main-wrapper">
       <div className="account-content">
-        <Link to="/adminlogin" className="btn btn-primary apply-btn">
-          Admin Girişi
+      <Link to="/login" className="btn btn-primary apply-btn">
+          Kullanıcı Girişi
         </Link>
         <div className="container">
           <div className="account-logo">
@@ -19,7 +19,7 @@ const Login = () => {
           </div>
           <div className="account-box">
             <div className="account-wrapper">
-              <h3 className="account-title">Giriş Yap</h3>
+              <h3 className="account-title">Admin Girişi</h3>
               <p className="account-subtitle">Sisteme Erişin</p>
               <form action="index.html">
                 <div className="form-group">
@@ -32,7 +32,7 @@ const Login = () => {
                       <label>Şifre</label>
                     </div>
                     <div className="col-auto">
-                      <Link className="text-muted" to="forgot-password.html">
+                      <Link className="text-muted" to="/forgotpassword">
                         Şifremi Unuttum?
                       </Link>
                     </div>
@@ -50,8 +50,8 @@ const Login = () => {
                 </div>
                 <div className="account-footer">
                   <p>
-                    Henüz bir hesabınız yok mu?{" "}
-                    <Link to="/register">Kayıt Ol</Link>
+                    Henüz bir admin hesabınız yok mu?{" "}
+                    <Link to="/adminregister">Kayıt Ol</Link>
                   </p>
                 </div>
               </form>
@@ -63,4 +63,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default AdminLogin;

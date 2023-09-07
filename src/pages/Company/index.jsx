@@ -1,6 +1,180 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { Bar, Line } from "react-chartjs-2";
+import { Link } from "react-router-dom";
+import Chart from "chart.js/auto";
 
 const Company = () => {
+  const [earnings, setEarnings] = useState(0);
+  const [previousMonthEarnings, setPreviousMonthEarnings] = useState(0);
+  const [expenses, setExpenses] = useState(0);
+  const [previousMonthExpenses, setPreviousMonthExpenses] = useState(0);
+  const [profit, setProfit] = useState(0);
+  const [previousMonthProfit, setPreviousMonthProfit] = useState(0);
+  const [earningsPercentage, setEarningsPercentage] = useState(0);
+  const [profitPercentage, setProfitPercentage] = useState(0);
+  const [expensesPercentage, setExpensesPercentage] = useState(0);
+
+  const invoices = [
+    {
+      invoiceNumber: "#INV-0001",
+      company: "Global Technologies",
+      date: "11 Mar 2019",
+      amount: "$380",
+      status: "Partially Paid",
+      badgeClassName: "badge bg-inverse-warning",
+    },
+    {
+      invoiceNumber: "#INV-0002",
+      company: "Delta Infotech",
+      date: "8 Feb 2019",
+      amount: "$500",
+      status: "Paid",
+      badgeClassName: "badge bg-inverse-success",
+    },
+    {
+      invoiceNumber: "#INV-0003",
+      company: "Cream Inc",
+      date: "23 Jan 2019",
+      amount: "$60",
+      status: "Unpaid",
+      badgeClassName: "badge bg-inverse-danger",
+    },
+  ];
+
+  const payments = [
+    {
+      invoiceID: "#INV-0001",
+      client: "Global Technologies",
+      paymentType: "Paypal",
+      paidDate: "11 Mar 2019",
+      paidAmount: "$380",
+    },
+    {
+      invoiceID: "#INV-0002",
+      client: "Delta Infotech",
+      paymentType: "Paypal",
+      paidDate: "8 Feb 2019",
+      paidAmount: "$500",
+    },
+    {
+      invoiceID: "#INV-0003",
+      client: "Cream Inc",
+      paymentType: "Paypal",
+      paidDate: "23 Jan 2019",
+      paidAmount: "$60",
+    },
+  ];
+  const dataBar = {
+    labels: ["Gelir 1", "Gelir 2", "Gelir 3", "Gelir 4"],
+    datasets: [
+      {
+        label: "Toplam Gelir",
+        backgroundColor: "rgba(75,192,192,0.2)",
+        borderColor: "rgba(75,192,192,1)",
+        borderWidth: 1,
+        hoverBackgroundColor: "rgba(75,192,192,0.4)",
+        hoverBorderColor: "rgba(75,192,192,1)",
+        data: [
+          (Math.random() * 100).toFixed(2),
+          (Math.random() * 100).toFixed(2),
+          (Math.random() * 100).toFixed(2),
+          (Math.random() * 100).toFixed(2),
+        ],
+      },
+    ],
+  };
+  const optionsBar = {
+    scales: {
+      x: {
+        type: "category", // Ölçek türünü "category" olarak belirtin
+        labels: ["Gelir 1", "Gelir 2", "Gelir 3", "Gelir 4"],
+      },
+      y: {
+        beginAtZero: true,
+      },
+    },
+  };
+
+  const dataLine = {
+    labels: ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs"],
+    datasets: [
+      {
+        label: "Satışlar",
+        fill: false,
+        lineTension: 0.1,
+        backgroundColor: "rgba(75,192,192,0.4)",
+        borderColor: "rgba(75,192,192,1)",
+        borderCapStyle: "butt",
+        borderDash: [],
+        borderDashOffset: 0.0,
+        borderJoinStyle: "miter",
+        pointBorderColor: "rgba(75,192,192,1)",
+        pointBackgroundColor: "#fff",
+        pointBorderWidth: 1,
+        pointHoverRadius: 5,
+        pointHoverBackgroundColor: "rgba(75,192,192,1)",
+        pointHoverBorderColor: "rgba(220,220,220,1)",
+        pointHoverBorderWidth: 2,
+        pointRadius: 1,
+        pointHitRadius: 10,
+        data: [
+          (Math.random() * 100).toFixed(2),
+          (Math.random() * 100).toFixed(2),
+          (Math.random() * 100).toFixed(2),
+          (Math.random() * 100).toFixed(2),
+          (Math.random() * 100).toFixed(2),
+        ],
+      },
+    ],
+  };
+
+  const optionsLine = {
+    scales: {
+      y: {
+        beginAtZero: true,
+      },
+    },
+  };
+  useEffect(() => {
+    const randomEarnings = (Math.random() * 100000).toFixed(3);
+    const previousMonthEarningsValue = (Math.random() * 100000).toFixed(3);
+    const expensesValue = (Math.random() * 10000).toFixed(3);
+    const previousMonthExpensesValue = (Math.random() * 10000).toFixed(3);
+
+    setEarnings(randomEarnings);
+    setExpenses(expensesValue);
+    setPreviousMonthEarnings(previousMonthEarningsValue);
+    setPreviousMonthExpenses(previousMonthExpensesValue);
+
+    const profitValue = (
+      parseFloat(randomEarnings) - parseFloat(expensesValue)
+    ).toFixed(3);
+    const previousMonthProfitValue = (
+      parseFloat(previousMonthEarningsValue) -
+      parseFloat(previousMonthExpensesValue)
+    ).toFixed(3);
+
+    setProfit(profitValue);
+    setPreviousMonthProfit(previousMonthProfitValue);
+
+    const earningsPercentageValue =
+      ((parseFloat(randomEarnings) - parseFloat(previousMonthEarningsValue)) /
+        parseFloat(previousMonthEarningsValue)) *
+      100;
+    setEarningsPercentage(earningsPercentageValue.toFixed(2));
+
+    const profitPercentageValue =
+      ((parseFloat(profitValue) - parseFloat(previousMonthProfitValue)) /
+        parseFloat(previousMonthProfitValue)) *
+      100;
+    setProfitPercentage(profitPercentageValue.toFixed(2));
+
+    const expensesPercentageValue =
+      ((parseFloat(expensesValue) - parseFloat(previousMonthExpensesValue)) /
+        parseFloat(previousMonthExpensesValue)) *
+      100;
+    setExpensesPercentage(expensesPercentageValue.toFixed(2));
+  }, []);
   return (
     <div className="page-wrapper">
       <div className="content container-fluid">
@@ -9,52 +183,13 @@ const Company = () => {
             <div className="col-sm-12">
               <h3 className="page-title">Welcome Şirket Adı!</h3>
               <ul className="breadcrumb">
-                <li className="breadcrumb-item active">Dashboard</li>
+                <li className="breadcrumb-item active">Panel</li>
               </ul>
             </div>
           </div>
         </div>
         {/* /Page Header */}
         <div className="row">
-          <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-            <div className="card dash-widget">
-              <div className="card-body">
-                <span className="dash-widget-icon">
-                  <i className="fa fa-cubes"></i>
-                </span>
-                <div className="dash-widget-info">
-                  <h3>112</h3>
-                  <span>Projects</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-            <div className="card dash-widget">
-              <div className="card-body">
-                <span className="dash-widget-icon">
-                  <i className="fa fa-usd"></i>
-                </span>
-                <div className="dash-widget-info">
-                  <h3>44</h3>
-                  <span>Clients</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3">
-            <div className="card dash-widget">
-              <div className="card-body">
-                <span className="dash-widget-icon">
-                  <i className="fa fa-diamond"></i>
-                </span>
-                <div className="dash-widget-info">
-                  <h3>37</h3>
-                  <span>Tasks</span>
-                </div>
-              </div>
-            </div>
-          </div>
           <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3">
             <div className="card dash-widget">
               <div className="card-body">
@@ -68,31 +203,46 @@ const Company = () => {
               </div>
             </div>
           </div>
-        </div>
-
-        <div className="row">
-          <div className="col-md-12">
-            <div className="row">
-              <div className="col-md-6 text-center">
-                <div className="card">
-                  <div className="card-body">
-                    <h3 className="card-title">Total Revenue</h3>
-                    <div id="bar-charts"></div>
-                  </div>
+          <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+            <div className="card dash-widget">
+              <div className="card-body">
+                <span className="dash-widget-icon">
+                  <i className="fa fa-usd"></i>
+                </span>
+                <div className="dash-widget-info">
+                  <h3>{(Math.random() * 100).toFixed(0)}</h3>
+                  <span>Müşteri</span>
                 </div>
               </div>
-              <div className="col-md-6 text-center">
-                <div className="card">
-                  <div className="card-body">
-                    <h3 className="card-title">Sales Overview</h3>
-                    <div id="line-charts"></div>
-                  </div>
+            </div>
+          </div>
+          <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+            <div className="card dash-widget">
+              <div className="card-body">
+                <span className="dash-widget-icon">
+                  <i className="fa fa-diamond"></i>
+                </span>
+                <div className="dash-widget-info">
+                  <h3>{(Math.random() * 200).toFixed(0)}</h3>
+                  <span>Görevler</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+            <div className="card dash-widget">
+              <div className="card-body">
+                <span className="dash-widget-icon">
+                  <i className="fa fa-cubes"></i>
+                </span>
+                <div className="dash-widget-info">
+                  <h3>{(Math.random() * 100).toFixed(0)}</h3>
+                  <span>Projeler</span>
                 </div>
               </div>
             </div>
           </div>
         </div>
-
         <div className="row">
           <div className="col-md-12">
             <div className="card-group m-b-30">
@@ -100,50 +250,36 @@ const Company = () => {
                 <div className="card-body">
                   <div className="d-flex justify-content-between mb-3">
                     <div>
-                      <span className="d-block">New Employees</span>
+                      <span className="d-block">Aylık Kazanç</span>
                     </div>
                     <div>
-                      <span className="text-success">+10%</span>
+                      <span
+                        className={
+                          earningsPercentage >= 0
+                            ? "text-success"
+                            : "text-danger"
+                        }
+                      >
+                        {earningsPercentage >= 0
+                          ? `+${earningsPercentage}%`
+                          : `${earningsPercentage}%`}
+                      </span>
                     </div>
                   </div>
-                  <h3 className="mb-3">10</h3>
+                  <h3 className="mb-3">{earnings}₺</h3>
                   <div className="progress mb-2" style={{ height: "5px" }}>
                     <div
                       className="progress-bar bg-primary"
                       role="progressbar"
-                      style={{ width: "70%" }}
-                      aria-valuenow="40"
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                    ></div>
-                  </div>
-                  <p className="mb-0">Overall Employees 218</p>
-                </div>
-              </div>
-
-              <div className="card">
-                <div className="card-body">
-                  <div className="d-flex justify-content-between mb-3">
-                    <div>
-                      <span className="d-block">Earnings</span>
-                    </div>
-                    <div>
-                      <span className="text-success">+12.5%</span>
-                    </div>
-                  </div>
-                  <h3 className="mb-3">$1,42,300</h3>
-                  <div className="progress mb-2" style={{ height: "5px" }}>
-                    <div
-                      className="progress-bar bg-primary"
-                      role="progressbar"
-                      style={{ width: "70%" }}
+                      style={{ width: `${earnings / 1000}%` }}
                       aria-valuenow="40"
                       aria-valuemin="0"
                       aria-valuemax="100"
                     ></div>
                   </div>
                   <p className="mb-0">
-                    Previous Month <span className="text-muted">$1,15,852</span>
+                    Bir Önceki Ay Kazanç{"   "}
+                    <span className="text-muted">{previousMonthEarnings}₺</span>
                   </p>
                 </div>
               </div>
@@ -152,25 +288,36 @@ const Company = () => {
                 <div className="card-body">
                   <div className="d-flex justify-content-between mb-3">
                     <div>
-                      <span className="d-block">Expenses</span>
+                      <span className="d-block">Harcamalar</span>
                     </div>
                     <div>
-                      <span className="text-danger">-2.8%</span>
+                      <span
+                        className={
+                          expensesPercentage >= 0
+                            ? "text-success"
+                            : "text-danger"
+                        }
+                      >
+                        {expensesPercentage >= 0
+                          ? `+${expensesPercentage}%`
+                          : `${expensesPercentage}%`}
+                      </span>
                     </div>
                   </div>
-                  <h3 className="mb-3">$8,500</h3>
+                  <h3 className="mb-3">{expenses}₺</h3>
                   <div className="progress mb-2" style={{ height: "5px" }}>
                     <div
                       className="progress-bar bg-primary"
                       role="progressbar"
-                      style={{ width: "70%" }}
+                      style={{ width: `${expenses / 1000}%` }}
                       aria-valuenow="40"
                       aria-valuemin="0"
                       aria-valuemax="100"
                     ></div>
                   </div>
                   <p className="mb-0">
-                    Previous Month <span className="text-muted">$7,500</span>
+                    Bir Önceki Ay Harcamaları{"   "}
+                    <span className="text-muted">{previousMonthExpenses}₺</span>
                   </p>
                 </div>
               </div>
@@ -179,280 +326,67 @@ const Company = () => {
                 <div className="card-body">
                   <div className="d-flex justify-content-between mb-3">
                     <div>
-                      <span className="d-block">Profit</span>
+                      <span className="d-block">Kâr</span>
                     </div>
                     <div>
-                      <span className="text-danger">-75%</span>
+                      <span
+                        className={
+                          profitPercentage >= 0 ? "text-success" : "text-danger"
+                        }
+                      >
+                        {profitPercentage >= 0
+                          ? `+${profitPercentage}%`
+                          : `${profitPercentage}%`}
+                      </span>
                     </div>
                   </div>
-                  <h3 className="mb-3">$1,12,000</h3>
+                  <h3 className="mb-3">{profit}₺</h3>
                   <div className="progress mb-2" style={{ height: "5px" }}>
                     <div
                       className="progress-bar bg-primary"
                       role="progressbar"
-                      style={{ width: "70%" }}
+                      style={{ width: `${profit / 1000}%` }}
                       aria-valuenow="40"
                       aria-valuemin="0"
                       aria-valuemax="100"
                     ></div>
                   </div>
                   <p className="mb-0">
-                    Previous Month <span className="text-muted">$1,42,000</span>
+                    Bir Önceki Ayı Kârı{"   "}
+                    <span className="text-muted">{previousMonthProfit}₺</span>
                   </p>
                 </div>
               </div>
             </div>
           </div>
         </div>
-
         <div className="row">
-          <div className="col-md-12 col-lg-12 col-xl-4 d-flex">
-            <div className="card flex-fill dash-statistics">
-              <div className="card-body">
-                <h5 className="card-title">Statistics</h5>
-                <div className="stats-list">
-                  <div className="stats-info">
-                    <p>
-                      Today Leave{" "}
-                      <strong>
-                        4 <small>/ 65</small>
-                      </strong>
-                    </p>
-                    <div className="progress">
-                      <div
-                        className="progress-bar bg-primary"
-                        role="progressbar"
-                        style={{ width: "31%" }}
-                        aria-valuenow="31"
-                        aria-valuemin="0"
-                        aria-valuemax="100"
-                      ></div>
-                    </div>
-                  </div>
-                  <div className="stats-info">
-                    <p>
-                      Pending Invoice{" "}
-                      <strong>
-                        15 <small>/ 92</small>
-                      </strong>
-                    </p>
-                    <div className="progress">
-                      <div
-                        className="progress-bar bg-warning"
-                        role="progressbar"
-                        style={{ width: "31%" }}
-                        aria-valuenow="31"
-                        aria-valuemin="0"
-                        aria-valuemax="100"
-                      ></div>
-                    </div>
-                  </div>
-                  <div className="stats-info">
-                    <p>
-                      Completed Projects{" "}
-                      <strong>
-                        85 <small>/ 112</small>
-                      </strong>
-                    </p>
-                    <div className="progress">
-                      <div
-                        className="progress-bar bg-success"
-                        role="progressbar"
-                        style={{ width: "62%" }}
-                        aria-valuenow="62"
-                        aria-valuemin="0"
-                        aria-valuemax="100"
-                      ></div>
-                    </div>
-                  </div>
-                  <div className="stats-info">
-                    <p>
-                      Open Tickets{" "}
-                      <strong>
-                        190 <small>/ 212</small>
-                      </strong>
-                    </p>
-                    <div className="progress">
-                      <div
-                        className="progress-bar bg-danger"
-                        role="progressbar"
-                        style={{ width: "62%" }}
-                        aria-valuenow="62"
-                        aria-valuemin="0"
-                        aria-valuemax="100"
-                      ></div>
-                    </div>
-                  </div>
-                  <div className="stats-info">
-                    <p>
-                      Closed Tickets{" "}
-                      <strong>
-                        22 <small>/ 212</small>
-                      </strong>
-                    </p>
-                    <div className="progress">
-                      <div
-                        className="progress-bar bg-info"
-                        role="progressbar"
-                        style={{ width: "22%" }}
-                        aria-valuenow="22"
-                        aria-valuemin="0"
-                        aria-valuemax="100"
-                      ></div>
+          <div className="col-md-12">
+            <div className="row">
+              <div className="col-md-6 text-center">
+                <div className="card">
+                  <div className="card-body">
+                    <h3 className="card-title">Toplam Gelir</h3>
+                    <div
+                      id="bar-charts"
+                      style={{ width: "100%", height: "400px" }}
+                    >
+                      <Bar data={dataBar} options={optionsBar} />
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-
-          <div className="col-md-12 col-lg-6 col-xl-4 d-flex">
-            <div className="card flex-fill">
-              <div className="card-body">
-                <h4 className="card-title">Task Statistics</h4>
-                <div className="statistics">
-                  <div className="row">
-                    <div className="col-md-6 col-6 text-center">
-                      <div className="stats-box mb-4">
-                        <p>Total Tasks</p>
-                        <h3>385</h3>
-                      </div>
-                    </div>
-                    <div className="col-md-6 col-6 text-center">
-                      <div className="stats-box mb-4">
-                        <p>Overdue Tasks</p>
-                        <h3>19</h3>
-                      </div>
+              <div className="col-md-6 text-center">
+                <div className="card">
+                  <div className="card-body">
+                    <h3 className="card-title">Satışlar</h3>
+                    <div
+                      id="line-charts"
+                      style={{ width: "100%", height: "400px" }}
+                    >
+                      <Line data={dataLine} options={optionsLine} />
                     </div>
                   </div>
-                </div>
-                <div className="progress mb-4">
-                  <div
-                    className="progress-bar bg-purple"
-                    role="progressbar"
-                    style={{ width: "30%" }}
-                    aria-valuenow="30"
-                    aria-valuemin="0"
-                    aria-valuemax="100"
-                  >
-                    30%
-                  </div>
-                  <div
-                    className="progress-bar bg-warning"
-                    role="progressbar"
-                    style={{ width: "22%" }}
-                    aria-valuenow="18"
-                    aria-valuemin="0"
-                    aria-valuemax="100"
-                  >
-                    22%
-                  </div>
-                  <div
-                    className="progress-bar bg-success"
-                    role="progressbar"
-                    style={{ width: "24%" }}
-                    aria-valuenow="12"
-                    aria-valuemin="0"
-                    aria-valuemax="100"
-                  >
-                    24%
-                  </div>
-                  <div
-                    className="progress-bar bg-danger"
-                    role="progressbar"
-                    style={{ width: "26%" }}
-                    aria-valuenow="14"
-                    aria-valuemin="0"
-                    aria-valuemax="100"
-                  >
-                    21%
-                  </div>
-                  <div
-                    className="progress-bar bg-info"
-                    role="progressbar"
-                    style={{ width: "10%" }}
-                    aria-valuenow="14"
-                    aria-valuemin="0"
-                    aria-valuemax="100"
-                  >
-                    10%
-                  </div>
-                </div>
-                <div>
-                  <p>
-                    <i className="fa fa-dot-circle-o text-purple mr-2"></i>
-                    Completed Tasks <span className="float-right">166</span>
-                  </p>
-                  <p>
-                    <i className="fa fa-dot-circle-o text-warning mr-2"></i>
-                    Inprogress Tasks <span className="float-right">115</span>
-                  </p>
-                  <p>
-                    <i className="fa fa-dot-circle-o text-success mr-2"></i>On
-                    Hold Tasks <span className="float-right">31</span>
-                  </p>
-                  <p>
-                    <i className="fa fa-dot-circle-o text-danger mr-2"></i>
-                    Pending Tasks <span className="float-right">47</span>
-                  </p>
-                  <p className="mb-0">
-                    <i className="fa fa-dot-circle-o text-info mr-2"></i>Review
-                    Tasks <span className="float-right">5</span>
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="col-md-12 col-lg-6 col-xl-4 d-flex">
-            <div className="card flex-fill">
-              <div className="card-body">
-                <h4 className="card-title">
-                  Today Absent{" "}
-                  <span className="badge bg-inverse-danger ml-2">5</span>
-                </h4>
-                <div className="leave-info-box">
-                  <div className="media align-items-center">
-                    <a href="profile.html" className="avatar">
-                      <img alt="" src="src/assets/img/user.jpg" />
-                    </a>
-                    <div className="media-body">
-                      <div className="text-sm my-0">Martin Lewis</div>
-                    </div>
-                  </div>
-                  <div className="row align-items-center mt-3">
-                    <div className="col-6">
-                      <h6 className="mb-0">4 Sep 2019</h6>
-                      <span className="text-sm text-muted">Leave Date</span>
-                    </div>
-                    <div className="col-6 text-right">
-                      <span className="badge bg-inverse-danger">Pending</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="leave-info-box">
-                  <div className="media align-items-center">
-                    <a href="profile.html" className="avatar">
-                      <img alt="" src="src/assets/img/user.jpg" />
-                    </a>
-                    <div className="media-body">
-                      <div className="text-sm my-0">Martin Lewis</div>
-                    </div>
-                  </div>
-                  <div className="row align-items-center mt-3">
-                    <div className="col-6">
-                      <h6 className="mb-0">4 Sep 2019</h6>
-                      <span className="text-sm text-muted">Leave Date</span>
-                    </div>
-                    <div className="col-6 text-right">
-                      <span className="badge bg-inverse-success">Approved</span>
-                    </div>
-                  </div>
-                </div>
-                <div className="load-more text-center">
-                  <a className="text-dark" href="javascript:void(0);">
-                    Load More
-                  </a>
                 </div>
               </div>
             </div>
@@ -463,198 +397,84 @@ const Company = () => {
           <div className="col-md-6 d-flex">
             <div className="card card-table flex-fill">
               <div className="card-header">
-                <h3 className="card-title mb-0">Invoices</h3>
+                <h3 className="card-title mb-0">Faturalar</h3>
               </div>
               <div className="card-body">
                 <div className="table-responsive">
                   <table className="table table-nowrap custom-table mb-0">
                     <thead>
                       <tr>
-                        <th>Invoice ID</th>
-                        <th>Client</th>
-                        <th>Due Date</th>
-                        <th>Total</th>
-                        <th>Status</th>
+                        <th>Fatura ID</th>
+                        <th>Müşteri</th>
+                        <th>Bitiş Tarihi</th>
+                        <th>Toplam</th>
+                        <th>Durum</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td>
-                          <a href="invoice-view.html">#INV-0001</a>
-                        </td>
-                        <td>
-                          <h2>
-                            <a href="#">Global Technologies</a>
-                          </h2>
-                        </td>
-                        <td>11 Mar 2019</td>
-                        <td>$380</td>
-                        <td>
-                          <span className="badge bg-inverse-warning">
-                            Partially Paid
-                          </span>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <a href="invoice-view.html">#INV-0002</a>
-                        </td>
-                        <td>
-                          <h2>
-                            <a href="#">Delta Infotech</a>
-                          </h2>
-                        </td>
-                        <td>8 Feb 2019</td>
-                        <td>$500</td>
-                        <td>
-                          <span className="badge bg-inverse-success">Paid</span>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <a href="invoice-view.html">#INV-0003</a>
-                        </td>
-                        <td>
-                          <h2>
-                            <a href="#">Cream Inc</a>
-                          </h2>
-                        </td>
-                        <td>23 Jan 2019</td>
-                        <td>$60</td>
-                        <td>
-                          <span className="badge bg-inverse-danger">
-                            Unpaid
-                          </span>
-                        </td>
-                      </tr>
+                      {invoices.map((invoice, index) => (
+                        <tr key={index}>
+                          <td>{invoice.invoiceNumber}</td>
+                          <td>
+                            <h2>
+                              <Link to="#">{invoice.company}</Link>
+                            </h2>
+                          </td>
+                          <td>{invoice.date}</td>
+                          <td>{invoice.amount}</td>
+                          <td>
+                            <span className={invoice.badgeClassName}>
+                              {invoice.status}
+                            </span>
+                          </td>
+                        </tr>
+                      ))}
                     </tbody>
                   </table>
                 </div>
               </div>
               <div className="card-footer">
-                <a href="invoices.html">View all invoices</a>
+                <Link to="#">View all invoices</Link>
               </div>
             </div>
           </div>
           <div className="col-md-6 d-flex">
             <div className="card card-table flex-fill">
               <div className="card-header">
-                <h3 className="card-title mb-0">Payments</h3>
+                <h3 className="card-title mb-0">Ödemeler</h3>
               </div>
               <div className="card-body">
                 <div className="table-responsive">
                   <table className="table custom-table table-nowrap mb-0">
                     <thead>
                       <tr>
-                        <th>Invoice ID</th>
-                        <th>Client</th>
-                        <th>Payment Type</th>
-                        <th>Paid Date</th>
+                        <th>Fatura ID</th>
+                        <th>Müşteri</th>
+                        <th>Ödeme Türü</th>
+                        <th>Ödeme</th>
                         <th>Paid Amount</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td>
-                          <a href="invoice-view.html">#INV-0001</a>
-                        </td>
-                        <td>
-                          <h2>
-                            <a href="#">Global Technologies</a>
-                          </h2>
-                        </td>
-                        <td>Paypal</td>
-                        <td>11 Mar 2019</td>
-                        <td>$380</td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <a href="invoice-view.html">#INV-0002</a>
-                        </td>
-                        <td>
-                          <h2>
-                            <a href="#">Delta Infotech</a>
-                          </h2>
-                        </td>
-                        <td>Paypal</td>
-                        <td>8 Feb 2019</td>
-                        <td>$500</td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <a href="invoice-view.html">#INV-0003</a>
-                        </td>
-                        <td>
-                          <h2>
-                            <a href="#">Cream Inc</a>
-                          </h2>
-                        </td>
-                        <td>Paypal</td>
-                        <td>23 Jan 2019</td>
-                        <td>$60</td>
-                      </tr>
+                      {payments.map((payment, index) => (
+                        <tr key={index}>
+                          <td>{payment.invoiceID}</td>
+                          <td>
+                            <h2>
+                              <Link to="#">{payment.client}</Link>
+                            </h2>
+                          </td>
+                          <td>{payment.paymentType}</td>
+                          <td>{payment.paidDate}</td>
+                          <td>{payment.paidAmount}</td>
+                        </tr>
+                      ))}
                     </tbody>
                   </table>
                 </div>
               </div>
               <div className="card-footer">
-                <a href="payments.html">View all payments</a>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="row">
-          <div className="col-md-6 d-flex">
-            <div className="card card-table flex-fill">
-              <div className="card-header">
-                <h3 className="card-title mb-0">Clients</h3>
-              </div>
-              <div className="card-body">
-                <div className="table-responsive">
-                  <table className="table custom-table mb-0">
-                    <thead>
-                      <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Status</th>
-                        <th className="text-right">Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {/* Buraya müşteri verilerini döngü ile ekleyebilirsiniz */}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-              <div className="card-footer">
-                <a href="clients.html">View all clients</a>
-              </div>
-            </div>
-          </div>
-          <div className="col-md-6 d-flex">
-            <div className="card card-table flex-fill">
-              <div className="card-header">
-                <h3 className="card-title mb-0">Recent Projects</h3>
-              </div>
-              <div className="card-body">
-                <div className="table-responsive">
-                  <table className="table custom-table mb-0">
-                    <thead>
-                      <tr>
-                        <th>Project Name</th>
-                        <th>Progress</th>
-                        <th className="text-right">Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {/* Buraya proje verilerini döngü ile ekleyebilirsiniz */}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-              <div className="card-footer">
-                <a href="projects.html">View all projects</a>
+                <Link to="#">View all payments</Link>
               </div>
             </div>
           </div>
