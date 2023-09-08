@@ -27,8 +27,8 @@ const SideBar = () => {
               </Link>
             </li>
             <li>
-              <Link to="clients.html">
-                <i className="la la-user"></i> <span>Clients</span>
+              <Link to="/calendar">
+                <i className="la la-calendar"></i> <span>Takvim</span>
               </Link>
             </li>
           </ul>

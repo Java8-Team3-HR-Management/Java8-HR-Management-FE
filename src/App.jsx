@@ -20,7 +20,7 @@ const App = () => {
   //   // checkAuthorization();
   // }, []);
   //setIsAuthorized(true);
-  return <Routes isAuthorized={true} />;
+  return <Routes isAuthorized={false} />;
 };
 
 export default App;
