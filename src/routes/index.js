@@ -9,6 +9,7 @@ import { renderRoutes } from "./generate-routes";
 import ForgotPassword from "../pages/ForgotPassword";
 import AdminLogin from "../pages/AdminLogin";
 import AdminRegister from "../pages/AdminRegister";
+import Calendar from "../pages/Calendar";
 export const routes = [
   {
     layout: EmptyLayout,
@@ -72,6 +73,13 @@ export const routes = [
         title: "Çalışanlar",
         component: Employee,
         path: "/employee",
+      },
+      
+      {
+        name: "calendar",
+        title: "Takvim",
+        component: Calendar,
+        path: "/calendar",
       },
     ],
   },
