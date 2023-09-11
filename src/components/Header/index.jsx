@@ -39,13 +39,13 @@ const index = () => {
             <span>Admin</span>
           </Link>
           <div className="dropdown-menu">
-            <Link className="dropdown-item" to="profile.html">
+            <Link className="dropdown-item" to="/profile">
               <i className="la la-user"></i> <span>Profilim</span>
             </Link>
-            <Link className="dropdown-item" to="settings.html">
+            <Link className="dropdown-item" to="#">
               Ayarlar
             </Link>
-            <Link className="dropdown-item" to="login.html">
+            <Link className="dropdown-item" to="/login">
               Çıkış
             </Link>
           </div>
