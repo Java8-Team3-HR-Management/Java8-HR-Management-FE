@@ -10,6 +10,7 @@ import ForgotPassword from "../pages/ForgotPassword";
 import AdminLogin from "../pages/AdminLogin";
 import AdminRegister from "../pages/AdminRegister";
 import Calendar from "../pages/Calendar";
+import Profile from "../pages/Profile";
 export const routes = [
   {
     layout: EmptyLayout,
@@ -74,12 +75,17 @@ export const routes = [
         component: Employee,
         path: "/employee",
       },
-      
       {
         name: "calendar",
         title: "Takvim",
         component: Calendar,
         path: "/calendar",
+      },
+      {
+        name: "profile",
+        title: "Profile",
+        component: Profile,
+        path: "/profile",
       },
     ],
   },
