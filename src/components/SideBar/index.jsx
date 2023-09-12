@@ -15,6 +15,11 @@ const SideBar = () => {
                 <i className="la la-columns"></i> <span> Yönetici Paneli</span>{" "}
               </Link>
             </li>
+            <li>
+              <Link className="active" to="/add-company">
+                <i className="la la-building"></i> <span> Şirketler</span>{" "}
+              </Link>
+            </li>
             <li className="menu-title">Şirket</li>
             <li>
               <Link className="active" to="/company">
