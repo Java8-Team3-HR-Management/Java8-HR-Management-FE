@@ -11,6 +11,7 @@ import AdminLogin from "../pages/AdminLogin";
 import AdminRegister from "../pages/AdminRegister";
 import Calendar from "../pages/Calendar";
 import Profile from "../pages/Profile";
+import AddCompany from "../pages/Add Company";
 export const routes = [
   {
     layout: EmptyLayout,
@@ -86,6 +87,12 @@ export const routes = [
         title: "Profile",
         component: Profile,
         path: "/profile",
+      },
+      {
+        name: "addCompany",
+        title: "Add Company",
+        component: AddCompany,
+        path: "/add-company",
       },
     ],
   },
