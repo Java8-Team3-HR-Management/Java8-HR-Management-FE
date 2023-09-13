@@ -112,12 +112,9 @@ const AddCompany = () => {
 											<td>1 Jan 2013</td>
 											<td>
 												<div className="dropdown">
-													<Link to="" className="btn btn-white btn-sm btn-rounded dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Web Developer </Link>
+													<Link to="" className="btn btn-white btn-sm btn-rounded dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> Pasif </Link>
 													<div className="dropdown-menu">
-														<Link className="dropdown-item" to="#">Software Engineer</Link>
-														<Link className="dropdown-item" to="#">Software Tester</Link>
-														<Link className="dropdown-item" to="#">Frontend Developer</Link>
-														<Link className="dropdown-item" to="#">UI/UX Developer</Link>
+														<Link className="dropdown-item" to="#">Aktif</Link>
 													</div>
 												</div>
 											</td>
@@ -143,13 +140,10 @@ const AddCompany = () => {
 											<td>9876543210</td>
 											<td>18 Mar 2014</td>
 											<td>
-												<div className="dropdown">
-													<Link to="" className="btn btn-white btn-sm btn-rounded dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Web Developer </Link>
+                      <div className="dropdown">
+													<Link to="" className="btn btn-white btn-sm btn-rounded dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> Pasif </Link>
 													<div className="dropdown-menu">
-														<Link className="dropdown-item" to="#">Software Engineer</Link>
-														<Link className="dropdown-item" to="#">Software Tester</Link>
-														<Link className="dropdown-item" to="#">Frontend Developer</Link>
-														<Link className="dropdown-item" to="#">UI/UX Developer</Link>
+														<Link className="dropdown-item" to="#">Aktif</Link>
 													</div>
 												</div>
 											</td>
@@ -175,13 +169,10 @@ const AddCompany = () => {
 											<td>9876543210</td>
 											<td>1 Apr 2014</td>
 											<td>
-												<div className="dropdown">
-													<Link to="" className="btn btn-white btn-sm btn-rounded dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Web Developer </Link>
+                      <div className="dropdown">
+													<Link to="" className="btn btn-white btn-sm btn-rounded dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> Pasif </Link>
 													<div className="dropdown-menu">
-														<Link className="dropdown-item" to="#">Software Engineer</Link>
-														<Link className="dropdown-item" to="#">Software Tester</Link>
-														<Link className="dropdown-item" to="#">Frontend Developer</Link>
-														<Link className="dropdown-item" to="#">UI/UX Developer</Link>
+														<Link className="dropdown-item" to="#">Aktif</Link>
 													</div>
 												</div>
 											</td>
@@ -207,13 +198,10 @@ const AddCompany = () => {
 											<td>9876543210</td>
 											<td>1 Apr 2014</td>
 											<td>
-												<div className="dropdown">
-													<Link to="" className="btn btn-white btn-sm btn-rounded dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Web Developer </Link>
+                      <div className="dropdown">
+													<Link to="" className="btn btn-white btn-sm btn-rounded dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> Pasif </Link>
 													<div className="dropdown-menu">
-														<Link className="dropdown-item" to="#">Software Engineer</Link>
-														<Link className="dropdown-item" to="#">Software Tester</Link>
-														<Link className="dropdown-item" to="#">Frontend Developer</Link>
-														<Link className="dropdown-item" to="#">UI/UX Developer</Link>
+														<Link className="dropdown-item" to="#">Aktif</Link>
 													</div>
 												</div>
 											</td>
@@ -239,13 +227,10 @@ const AddCompany = () => {
 											<td>9876543210</td>
 											<td>22 May 2014</td>
 											<td>
-												<div className="dropdown">
-													<Link to="" className="btn btn-white btn-sm btn-rounded dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Web Developer </Link>
+                      <div className="dropdown">
+													<Link to="" className="btn btn-white btn-sm btn-rounded dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> Pasif </Link>
 													<div className="dropdown-menu">
-														<Link className="dropdown-item" to="#">Software Engineer</Link>
-														<Link className="dropdown-item" to="#">Software Tester</Link>
-														<Link className="dropdown-item" to="#">Frontend Developer</Link>
-														<Link className="dropdown-item" to="#">UI/UX Developer</Link>
+														<Link className="dropdown-item" to="#">Aktif</Link>
 													</div>
 												</div>
 											</td>
@@ -271,13 +256,10 @@ const AddCompany = () => {
 											<td>9876543210</td>
 											<td>16 Jun 2013</td>
 											<td>
-												<div className="dropdown">
-													<Link to="" className="btn btn-white btn-sm btn-rounded dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Web Developer </Link>
+                      <div className="dropdown">
+													<Link to="" className="btn btn-white btn-sm btn-rounded dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> Pasif </Link>
 													<div className="dropdown-menu">
-														<Link className="dropdown-item" to="#">Software Engineer</Link>
-														<Link className="dropdown-item" to="#">Software Tester</Link>
-														<Link className="dropdown-item" to="#">Frontend Developer</Link>
-														<Link className="dropdown-item" to="#">UI/UX Developer</Link>
+														<Link className="dropdown-item" to="#">Aktif</Link>
 													</div>
 												</div>
 											</td>
@@ -303,13 +285,10 @@ const AddCompany = () => {
 											<td>9876543210</td>
 											<td>1 Jan 2013</td>
 											<td>
-												<div className="dropdown">
-													<Link to="" className="btn btn-white btn-sm btn-rounded dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Web Developer </Link>
+                      <div className="dropdown">
+													<Link to="" className="btn btn-white btn-sm btn-rounded dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> Pasif </Link>
 													<div className="dropdown-menu">
-														<Link className="dropdown-item" to="#">Software Engineer</Link>
-														<Link className="dropdown-item" to="#">Software Tester</Link>
-														<Link className="dropdown-item" to="#">Frontend Developer</Link>
-														<Link className="dropdown-item" to="#">UI/UX Developer</Link>
+														<Link className="dropdown-item" to="#">Aktif</Link>
 													</div>
 												</div>
 											</td>
