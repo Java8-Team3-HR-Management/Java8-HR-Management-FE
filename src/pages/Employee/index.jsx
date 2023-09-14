@@ -9,32 +9,42 @@ const Employee = () => {
     e.preventDefault();
     const nameSurnameConcat =
       e.target.firstName.value + " " + e.target.lastName.value;
+    const birthDateConvert = new Date(e.target.birthDate.value);
+    const memberDateConvert = new Date(e.target.membershipDate.value);
     const user = {
       nameSurname: nameSurnameConcat,
       email: e.target.email.value,
       birthPlace: e.target.birthPlace.value,
-      birthDate: e.target.birthDate.value,
+      birthDate: birthDateConvert,
       department: e.target.department.value,
       title: e.target.title.value,
       location: e.target.location.value,
       phone: e.target.phone.value,
-      membershipDate: e.target.membershipDate.value,
+      membershipDate: memberDateConvert,
       salary: e.target.salary.value,
-      companyName: "Test Company",
-      companyid: "1",
+      companyName: "TestCompany",
+      companyId: "1",
     };
     console.log(user);
     axios
-      .post("http://localhost:9092/api/v1/employee/employee", user)
+      .post("http://localhost:9092/api/v1/employee/addEmployee", user)
       .then((res) => {
         console.log(res.data);
         setCount(count + 1);
+      })
+      .catch((error) => {
+        // Hata durumları da ele alınabilir
+        console.error(error);
       });
   };
   useEffect(() => {
     axios
-      .get(`http://localhost:9092/api/v1/employee/findAll/Test Company`)
-      .then((res) => setEmployees(res.data));
+      .get(`http://localhost:9092/api/v1/employee/findAll/TestCompany`)
+      .then((res) => setEmployees(res.data))
+      .catch((error) => {
+        // Hata durumları da ele alınabilir
+        console.error(error);
+      });
   }, [count]);
   return (
     <div className="page-wrapper">
@@ -96,11 +106,11 @@ const Employee = () => {
           <div className="col-sm-6 col-md-3">
             <div className="form-group form-focus select-focus">
               <select className="select floating">
-                <option>Select Designation</option>
-                <option>Web Developer</option>
-                <option>Web Designer</option>
-                <option>Android Developer</option>
-                <option>Ios Developer</option>
+                <option value="">Select Designation</option>
+                <option value="">Web Developer</option>
+                <option value="">Web Designer</option>
+                <option value="">Android Developer</option>
+                <option value="">Ios Developer</option>
               </select>
               <label className="focus-label">Designation</label>
             </div>
@@ -239,7 +249,7 @@ const Employee = () => {
                       <div className="cal-icon">
                         <input
                           className="form-control datetimepicker"
-                          type="date"
+                          type="text"
                           name="birthDate"
                         />
                       </div>
@@ -298,7 +308,7 @@ const Employee = () => {
                     <div className="cal-icon">
                       <input
                         className="form-control datetimepicker"
-                        type="date"
+                        type="text"
                         name="membershipDate"
                       />
                     </div>
@@ -466,10 +476,10 @@ const Employee = () => {
                         Designation <span className="text-danger">*</span>
                       </label>
                       <select className="select">
-                        <option>Select Designation</option>
-                        <option>Web Designer</option>
-                        <option>Web Developer</option>
-                        <option>Android Developer</option>
+                        <option value="">Select Designation</option>
+                        <option value="">Web Designer</option>
+                        <option value="">Web Developer</option>
+                        <option value="">Android Developer</option>
                       </select>
                     </div>
                   </div>

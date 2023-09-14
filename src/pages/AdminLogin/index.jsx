@@ -1,7 +1,33 @@
+import axios from "axios";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 
 const AdminLogin = () => {
+  const navigate = useNavigate();
+  const onSubmit = (e) => {
+    e.preventDefault();
+
+    const login = {
+      email: e.target.email.value,
+      password: e.target.password.value,
+    };
+
+    console.log(login);
+
+    axios
+      .post("http://localhost:9091/api/v1/auth/login", login)
+      .then((res) => {
+        console.log(res.data); 
+        if(res.data.role ==="ADMIN"){
+          navigate("/admin"); 
+        }
+       
+      })
+      .catch((error) => {
+        // Hata durumları da ele alınabilir
+        console.error(error);
+      });
+  };
   return (
     <div className="main-wrapper">
       <div className="account-content">
@@ -21,7 +47,7 @@ const AdminLogin = () => {
             <div className="account-wrapper">
               <h3 className="account-title">Admin Girişi</h3>
               <p className="account-subtitle">Sisteme Erişin</p>
-              <form action="index.html">
+              <form onSubmit={onSubmit}>
                 <div className="form-group">
                   <label>Email Adresi</label>
                   <input className="form-control" type="text" name="email" />

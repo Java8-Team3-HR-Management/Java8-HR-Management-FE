@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const BasicProfile = () => {
+const BasicProfile = ({profile}) => {
   return (
     <div className="card mb-0">
       <div className="card-body">
@@ -19,7 +19,7 @@ const BasicProfile = () => {
                 <div className="row">
                   <div className="col-md-5">
                     <div className="profile-info-left">
-                      <h3 className="user-name m-t-0 mb-0">John Doe</h3>
+                      <h3 className="user-name m-t-0 mb-0">{profile.name}</h3>
                       <h6 className="text-muted">UI/UX Design Team</h6>
                       <small className="text-muted">Web Designer</small>
                       <div className="staff-id">Employee ID : FT-0001</div>
