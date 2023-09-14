@@ -1,7 +1,9 @@
+import Cookies from "js-cookie";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const index = () => {
+  const navigate = useNavigate();
   return (
     <div className="header">
       <div className="header-left">
@@ -45,7 +47,15 @@ const index = () => {
             <Link className="dropdown-item" to="#">
               Ayarlar
             </Link>
-            <Link className="dropdown-item" to="/login">
+            <Link
+              className="dropdown-item"
+              to="/login"
+              onClick={() => {
+                Cookies.remove("accessToken");
+                Cookies.remove("decodeRole");
+                Cookies.remove("decodeId");
+              }}
+            >
               Çıkış
             </Link>
           </div>
@@ -61,13 +71,21 @@ const index = () => {
           <i className="fa fa-ellipsis-v"></i>
         </Link>
         <div className="dropdown-menu dropdown-menu-right">
-          <Link className="dropdown-item" to="profile.html">
+          <Link className="dropdown-item" to="/profile">
             <i className="la la-user"></i> <span>Profilim</span>
           </Link>
-          <Link className="dropdown-item" to="settings.html">
+          <Link className="dropdown-item" to="#">
             Ayarlar
           </Link>
-          <Link className="dropdown-item" to="login.html">
+          <Link
+            className="dropdown-item"
+            to="/login"
+            onClick={() => {
+              Cookies.remove("accessToken");
+              Cookies.remove("decodeRole");
+              Cookies.remove("decodeId");
+            }}
+          >
             Çıkış
           </Link>
         </div>
