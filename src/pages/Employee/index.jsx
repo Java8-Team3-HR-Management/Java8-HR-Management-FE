@@ -12,7 +12,8 @@ const Employee = () => {
     const birthDateConvert = new Date(e.target.birthDate.value);
     const memberDateConvert = new Date(e.target.membershipDate.value);
     const user = {
-      nameSurname: nameSurnameConcat,
+      name: e.target.firstName.value,
+      surname: e.target.lastName.value,
       email: e.target.email.value,
       birthPlace: e.target.birthPlace.value,
       birthDate: birthDateConvert,
@@ -165,7 +166,9 @@ const Employee = () => {
                   </div>
 
                   <h4 className="user-name m-t-10 mb-0 text-ellipsis">
-                    <Link to="profile.html">{employee.nameSurname}</Link>
+                    <Link to="#" key={employee.id}>
+                      {employee.name}
+                    </Link>
                   </h4>
                   <div className="small text-muted">{employee.department}</div>
                 </div>

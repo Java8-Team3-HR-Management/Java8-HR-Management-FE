@@ -12,6 +12,13 @@ import AdminRegister from "../pages/AdminRegister";
 import Calendar from "../pages/Calendar";
 import Profile from "../pages/Profile";
 import AddCompany from "../pages/Add Company";
+
+const ROLES = {
+  ADMIN: "ADMIN",
+  EMPLOYEE: "EMPLOYEE",
+  MANAGER: "MANAGER",
+  GUEST: "GUEST"
+};
 export const routes = [
   {
     layout: EmptyLayout,
@@ -63,12 +70,14 @@ export const routes = [
         path: "/admin",
         isPublic: false,
         isAuthorized: true,
+        role: ROLES.ADMIN,
       },
       {
         name: "company",
         title: "Şirket Sayfası",
         component: Company,
         path: "/company",
+        role:ROLES.MANAGER,
       },
       {
         name: "employee",
@@ -93,6 +102,7 @@ export const routes = [
         title: "Add Company",
         component: AddCompany,
         path: "/add-company",
+        role: ROLES.ADMIN,
       },
     ],
   },

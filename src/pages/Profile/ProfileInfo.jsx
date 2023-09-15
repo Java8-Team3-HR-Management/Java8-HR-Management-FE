@@ -1,12 +1,77 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 
-const ProfileInfo = () => {
+const ProfileInfo = ({ profile }) => {
+  // Verileri state içinde tutun
+  const [inputValue, setInputValue] = useState(profile.email);
+  const [nameValue, setNameValue] = useState(profile.name);
+  const [surnameValue, setSurnameValue] = useState(profile.surname);
+  const [phoneValue, setPhoneValue] = useState(profile.phone);
+  // Diğer alanlar için de state tanımlayabilirsiniz
+
+  // Input alanının değeri değiştiğinde çağrılacak işlev
+  const handleEmailChange = (event) => {
+    const newValue = event.target.value;
+    setInputValue(newValue);
+  };
+
+  const handleNameChange = (event) => {
+    const newValue = event.target.value;
+    setNameValue(newValue);
+  };
+
+  const handleSurnameChange = (event) => {
+    const newValue = event.target.value;
+    setSurnameValue(newValue);
+  };
+  const handlePhoneChange = (event) => {
+    const newValue = event.target.value;
+    setPhoneValue(newValue);
+  };
+
+  // onSubmit işlevini güncelleyin
+  const onSubmit = (e) => {
+    e.preventDefault();
+    const id = profile.id;
+    const profileInfo = {
+      id: id,
+      name: nameValue,
+      surname: surnameValue,
+      email: inputValue,
+      phone: e.target.phone.value,
+    };
+    axios
+      .put(
+        `http://localhost:9092/api/v1/employee/employeeupdate`,
+        profileInfo
+      )
+      .then((res) => {
+        console.log(res.data);
+        localStorage.setItem("username",nameValue+" "+ surnameValue);
+        alert("İşlem Başarılı");
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+  useEffect(() => {
+    // profile.email değiştiğinde, inputValue'yi güncelliyoruz
+    setNameValue(profile.name);
+    setSurnameValue(profile.surname);
+    setInputValue(profile.email);
+    setPhoneValue(profile.phone)
+  }, [profile]);
+
+  
   return (
     <div id="profile_info" className="modal custom-modal fade" role="dialog">
-      <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
+      <div
+        className="modal-dialog modal-dialog-centered modal-lg"
+        role="document"
+      >
         <div className="modal-content">
           <div className="modal-header">
-            <h5 className="modal-title">Profile Information</h5>
+            <h5 className="modal-title">Profil Bilgileri</h5>
             <button
               type="button"
               className="close"
@@ -17,7 +82,7 @@ const ProfileInfo = () => {
             </button>
           </div>
           <div className="modal-body">
-            <form>
+            <form onSubmit={onSubmit}>
               <div className="row">
                 <div className="col-md-12">
                   <div className="profile-img-wrap edit-img">
@@ -35,13 +100,25 @@ const ProfileInfo = () => {
                     <div className="col-md-6">
                       <div className="form-group">
                         <label>Adı</label>
-                        <input type="text" className="form-control" value="John" />
+                        <input
+                          type="text"
+                          className="form-control"
+                          value={nameValue}
+                          name="name"
+                          onChange={handleNameChange}
+                        />
                       </div>
                     </div>
                     <div className="col-md-6">
                       <div className="form-group">
                         <label>Soyadı</label>
-                        <input type="text" className="form-control" value="Doe" />
+                        <input
+                          type="text"
+                          className="form-control"
+                          value={surnameValue}
+                          name="surname"
+                          onChange={handleSurnameChange}
+                        />
                       </div>
                     </div>
                     <div className="col-md-6">
@@ -51,18 +128,20 @@ const ProfileInfo = () => {
                           <input
                             className="form-control datetimepicker"
                             type="text"
-                            value="05/06/1985"
+                            value={profile.birthDate}
                           />
                         </div>
                       </div>
                     </div>
                     <div className="col-md-6">
                       <div className="form-group">
-                        <label>Cinsiyet</label>
-                        <select className="select form-control">
-                          <option value="male selected">Erkek</option>
-                          <option value="female">Kadın</option>
-                        </select>
+                        <label>Mail</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          value={inputValue}
+                          name="email" onChange={handleEmailChange}
+                        />
                       </div>
                     </div>
                   </div>
@@ -75,30 +154,8 @@ const ProfileInfo = () => {
                     <input
                       type="text"
                       className="form-control"
-                      value="4487 Snowbird Lane"
+                      value={profile.location}
                     />
-                  </div>
-                </div>
-                <div className="col-md-6">
-                  <div className="form-group">
-                    <label>State</label>
-                    <input type="text" className="form-control" value="New York" />
-                  </div>
-                </div>
-                <div className="col-md-6">
-                  <div className="form-group">
-                    <label>Ülke</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      value="United States"
-                    />
-                  </div>
-                </div>
-                <div className="col-md-6">
-                  <div className="form-group">
-                    <label>Posta Kodu</label>
-                    <input type="text" className="form-control" value="10523" />
                   </div>
                 </div>
                 <div className="col-md-6">
@@ -107,7 +164,9 @@ const ProfileInfo = () => {
                     <input
                       type="text"
                       className="form-control"
-                      value="631-889-3206"
+                      value={phoneValue}
+                      name="phone"
+                      onChange={handlePhoneChange}
                     />
                   </div>
                 </div>
@@ -116,24 +175,11 @@ const ProfileInfo = () => {
                     <label>
                       Departman <span className="text-danger">*</span>
                     </label>
-                    <select className="select">
-                      <option>Departman Seç</option>
-                      <option>Web Development</option>
-                      <option>IT Management</option>
-                      <option>Marketing</option>
-                    </select>
-                  </div>
-                </div>
-                <div className="col-md-6">
-                  <div className="form-group">
-                    <label>
-                      Designation <span className="text-danger">*</span>
-                    </label>
-                    <select className="select">
-                      <option>Select Designation</option>
-                      <option>Web Designer</option>
-                      <option>Web Developer</option>
-                      <option>Android Developer</option>
+                    <select className="select" value={profile.department}>
+                      <option value="Departman Seç">Departman Seç</option>
+                      <option value="Web Development">Web Development</option>
+                      <option value="IT Management">IT Management</option>
+                      <option value="Marketing">Marketing</option>
                     </select>
                   </div>
                 </div>
@@ -144,15 +190,15 @@ const ProfileInfo = () => {
                     </label>
                     <select className="select">
                       <option>-</option>
-                      <option>Wilmer Deluna</option>
-                      <option>Lesley Grauer</option>
-                      <option>Jeffery Lalor</option>
+                      <option value="">Wilmer Deluna</option>
+                      <option value="">Lesley Grauer</option>
+                      <option value="">Jeffery Lalor</option>
                     </select>
                   </div>
                 </div>
               </div>
               <div className="submit-section">
-                <button className="btn btn-primary submit-btn">Gönder</button>
+                <button className="btn btn-primary submit-btn">Güncelle</button>
               </div>
             </form>
           </div>
