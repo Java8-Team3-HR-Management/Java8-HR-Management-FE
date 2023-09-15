@@ -14,12 +14,12 @@ import axios from "axios";
 const Profile = () => {
   const role = Cookies.get("decodeRole");
   const id = Cookies.get("decodeId");
-
   const [profile, setProfile] = useState([]);
+  localStorage.setItem("username",profile.name+" "+ profile.surname);
   useEffect(() => {
     if (role === "EMPLOYEE") {
       axios
-        .get("http://localhost:9092/api/v1/employee/getById")
+        .get(`http://localhost:9092/api/v1/employee/getEmployeeById/${id}`)
         .then((res) => {
           setProfile(res.data);
         })
@@ -64,12 +64,12 @@ const Profile = () => {
             </div>
           </div>
 
-          <BasicProfile />
+          <BasicProfile profile={profile}/>
 
           <div className="tab-content">
             <ProfileTab />
           </div>
-          <ProfileInfo />
+          <ProfileInfo profile={profile} />
 
           <PersonalInfoModal />
 

@@ -1,18 +1,30 @@
 import Cookies from "js-cookie";
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const index = () => {
-  const navigate = useNavigate();
+  const username = localStorage.getItem("username");
+  var role = Cookies.get("decodeRole");
+  var url = "/profile";
+  if(role === "EMPLOYEE"){
+    url = "/profile";
+  }else if(role === "ADMIN"){
+    url = "/admin";
+  }
+  else if(role === "MANAGER"){
+    url = "/company";
+  }else{
+    url = "/profile";
+  }
   return (
     <div className="header">
       <div className="header-left">
-        <Link a to="/company" className="logo">
+        <Link  to={url} className="logo">
           <img src="src/assets/img/logo.png" width="40" height="40" alt="" />
         </Link>
       </div>
 
-      <Link id="toggle_btn" to="/dashboard">
+      <Link id="toggle_btn" >
         <span className="bar-icon">
           <span></span>
           <span></span>
@@ -38,7 +50,7 @@ const index = () => {
             <span className="user-img">
               <img src="src/assets/img/profiles/avatar-21.jpg" alt="" />
             </span>
-            <span>Admin</span>
+            <span>{username}</span>
           </Link>
           <div className="dropdown-menu">
             <Link className="dropdown-item" to="/profile">
@@ -54,6 +66,7 @@ const index = () => {
                 Cookies.remove("accessToken");
                 Cookies.remove("decodeRole");
                 Cookies.remove("decodeId");
+                localStorage.removeItem("username");
               }}
             >
               Çıkış

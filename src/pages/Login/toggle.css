@@ -1,0 +1,79 @@
+.onoffswitch-custom {
+  margin-left: auto;
+  position: relative;
+  width: 100px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+.onoffswitch-checkbox-custom {
+  display: none;
+}
+.onoffswitch-label-custom {
+  display: block;
+  overflow: hidden;
+  cursor: pointer;
+  border-radius: 20px;
+  margin-bottom: 0;
+}
+.onoffswitch-inner-custom {
+  display: block;
+  margin-left: -100%;
+  transition: margin 0.3s ease-in 0s;
+  width: 200%;
+}
+.onoffswitch-inner-custom:before,
+.onoffswitch-inner-custom:after {
+  box-sizing: border-box;
+  color: #fff;
+  display: block;
+  float: left;
+  font-size: 16px;
+  height: 40px;
+  line-height: 40px;
+  padding: 0;
+  width: 50%;
+}
+.onoffswitch-inner-custom:before {
+  background-color: #677be6;
+  color: #fff;
+  content: "Şirket";
+  padding-left: 12px;
+}
+.onoffswitch-inner-custom:after {
+  content: "Ziyaretçi";
+  padding-right: 12px;
+  background-color: #8e69bc;
+  color: #fff;
+  text-align: right;
+}
+.onoffswitch-switch-custom {
+  background: #fff;
+  border-radius: 20px;
+  bottom: 0;
+  display: block;
+  height: 20px;
+  margin: 4px;
+  position: absolute;
+  right: 70px;
+  top: 5px;
+  transition: all 0.3s ease-in 0s;
+  width: 20px;
+}
+.onoffswitch-checkbox-custom:checked
+  + .onoffswitch-label-custom
+  .onoffswitch-inner-custom {
+  margin-left: 0;
+}
+.onoffswitch-checkbox-custom:checked
+  + .onoffswitch-label-custom
+  .onoffswitch-switch-custom {
+  right: 5px;
+}
+.onoffswitch-inner-custom::before,
+.onoffswitch-inner-custom::after,
+.form-control,
+.user-menu.nav > li > a,
+.page-header .breadcrumb {
+  font-size: 0.875rem;
+}

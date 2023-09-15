@@ -19,12 +19,12 @@ const BasicProfile = ({profile}) => {
                 <div className="row">
                   <div className="col-md-5">
                     <div className="profile-info-left">
-                      <h3 className="user-name m-t-0 mb-0">{profile.name}</h3>
-                      <h6 className="text-muted">UI/UX Design Team</h6>
-                      <small className="text-muted">Web Designer</small>
-                      <div className="staff-id">Employee ID : FT-0001</div>
+                      <h3 className="user-name m-t-0 mb-0">{profile.name+` `+profile.surname}</h3>
+                      <h6 className="text-muted">{profile.department}</h6>
+                      <small className="text-muted">{profile.title}</small>
+                      <div className="staff-id">Çalışan ID : {profile.id}</div>
                       <div className="small doj text-muted">
-                        Giriş Tarihi : 1st Jan 2013
+                        Giriş Tarihi : {profile.membershipDate}
                       </div>
                     </div>
                   </div>
@@ -33,23 +33,23 @@ const BasicProfile = ({profile}) => {
                       <li>
                         <div className="title">Telefon:</div>
                         <div className="text">
-                          <Link to="">9876543210</Link>
+                          <Link to="">{profile.phone}</Link>
                         </div>
                       </li>
                       <li>
                         <div className="title">Mail:</div>
                         <div className="text">
-                          <Link to="">johndoe@example.com</Link>
+                          <Link to="">{profile.email}</Link>
                         </div>
                       </li>
                       <li>
                         <div className="title">Doğum Tarihi:</div>
-                        <div className="text">24th July</div>
+                        <div className="text">{profile.birthDate}</div>
                       </li>
                       <li>
                         <div className="title">Adres:</div>
                         <div className="text">
-                          1861 Bayonne Ave, Manchester Township, NJ, 08759
+                          {profile.location}
                         </div>
                       </li>
                       <li>

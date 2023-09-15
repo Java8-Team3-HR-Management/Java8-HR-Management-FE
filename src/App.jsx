@@ -5,7 +5,6 @@ import jwt_decode from "jwt-decode";
 const App = () => {
   var isAuthorized = false;
     const accessToken = Cookies.get("accessToken");
-    console.log(accessToken);
    if(accessToken){
     const decode = jwt_decode(accessToken);
     Cookies.set("decodeRole", decode.role);
@@ -21,8 +20,7 @@ const App = () => {
       isAuthorized = true;
     }
    }
-console.log(isAuthorized);
-  return <Routes isAuthorized={isAuthorized} />;
+  return <Routes isAuthorized={true} />;
 };
 
 export default App;
