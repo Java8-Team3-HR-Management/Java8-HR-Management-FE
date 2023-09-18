@@ -9,7 +9,6 @@ const App = () => {
     const decode = jwt_decode(accessToken);
     Cookies.set("decodeRole", decode.role);
     Cookies.set("decodeId", decode.id);
-    
 
     if (decode?.exp < Date.now() / 1000) {
       Cookies.remove("accessToken");

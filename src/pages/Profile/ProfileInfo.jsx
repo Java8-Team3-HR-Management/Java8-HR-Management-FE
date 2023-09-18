@@ -42,7 +42,7 @@ const ProfileInfo = ({ profile }) => {
     };
     axios
       .put(
-        `http://localhost:9092/api/v1/employee/employeeupdate`,
+        `http://localhost:8082/api/v1/user/updateEmployee`,
         profileInfo
       )
       .then((res) => {

@@ -1,6 +1,8 @@
 import axios from "axios";
+import Cookies from "js-cookie";
 import React from "react";
-import { Link,useNavigate } from "react-router-dom";
+import jwt_decode from "jwt-decode";
+import { Link, useNavigate } from "react-router-dom";
 
 const AdminLogin = () => {
   const navigate = useNavigate();
@@ -12,16 +14,19 @@ const AdminLogin = () => {
       password: e.target.password.value,
     };
 
-    console.log(login);
-
     axios
       .post("http://localhost:9091/api/v1/auth/login", login)
       .then((res) => {
-        console.log(res.data); 
-        if(res.data.role ==="ADMIN"){
-          navigate("/admin"); 
+        console.log(res.data);
+        if (res.data.role === "ADMIN") {
+          const token = res.data.token;
+          Cookies.set("accessToken", token);
+          const decode = jwt_decode(token);
+          Cookies.set("decodeRole", decode.role);
+          Cookies.set("decodeId", decode.id);
+          console.log("decode id : ", decode.id);
+          navigate("/admin");
         }
-       
       })
       .catch((error) => {
         // Hata durumları da ele alınabilir
@@ -31,7 +36,7 @@ const AdminLogin = () => {
   return (
     <div className="main-wrapper">
       <div className="account-content">
-      <Link to="/login" className="btn btn-primary apply-btn">
+        <Link to="/login" className="btn btn-primary apply-btn">
           Kullanıcı Girişi
         </Link>
         <div className="container">

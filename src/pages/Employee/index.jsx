@@ -11,7 +11,7 @@ const Employee = () => {
       e.target.firstName.value + " " + e.target.lastName.value;
     const birthDateConvert = new Date(e.target.birthDate.value);
     const memberDateConvert = new Date(e.target.membershipDate.value);
-    const user = {
+    const auth = {
       name: e.target.firstName.value,
       surname: e.target.lastName.value,
       email: e.target.email.value,
@@ -26,9 +26,9 @@ const Employee = () => {
       companyName: "TestCompany",
       companyId: "1",
     };
-    console.log(user);
+    console.log(auth);
     axios
-      .post("http://localhost:9092/api/v1/employee/addEmployee", user)
+      .post("http://localhost:9091/api/v1/auth/createEmployee", auth)
       .then((res) => {
         console.log(res.data);
         setCount(count + 1);
@@ -40,7 +40,7 @@ const Employee = () => {
   };
   useEffect(() => {
     axios
-      .get(`http://localhost:9092/api/v1/employee/findAll/TestCompany`)
+      .get(`http://localhost:8082/api/v1/user/findAllEmployee/TestCompany`)
       .then((res) => setEmployees(res.data))
       .catch((error) => {
         // Hata durumları da ele alınabilir
@@ -130,7 +130,7 @@ const Employee = () => {
           <div className="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
             {employees.map((employee) => {
               return (
-                <div className="profile-widget">
+                <div className="profile-widget" key={employee.id}>
                   <div className="profile-img">
                     <Link to="profile.html" className="avatar">
                       <img src="src/assets/img/profiles/avatar-02.jpg" alt="" />
@@ -166,7 +166,7 @@ const Employee = () => {
                   </div>
 
                   <h4 className="user-name m-t-10 mb-0 text-ellipsis">
-                    <Link to="#" key={employee.id}>
+                    <Link to="#" >
                       {employee.name}
                     </Link>
                   </h4>

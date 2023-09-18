@@ -23,7 +23,7 @@ const Login = () => {
     }
 
     axios
-      .post("http://localhost:9091/api/v1/auth/login", login)
+      .post("http://localhost/auth/login", login)
       .then((res) => {
         const token = res.data.token;
         Cookies.set("accessToken", token);

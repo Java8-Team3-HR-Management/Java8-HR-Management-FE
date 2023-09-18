@@ -5,10 +5,11 @@ import { Link } from "react-router-dom";
 const AdminRegister = () => {
   const onSubmit = (e) => {
     e.preventDefault();
-    const nameSurnameConcat =
-      e.target.firstName.value + " " + e.target.lastName.value;
     const admin = {
-      nameSurmname: nameSurnameConcat,
+      companyId: 0,
+      companyName: "",
+      name:e.target.firstName.value,
+      Surmname: e.target.lastName.value,
       email: e.target.email.value,
       password: e.target.password.value,
     };
@@ -16,7 +17,7 @@ const AdminRegister = () => {
     console.log(admin);
     if (admin.password === rePassword) {
       axios
-        .post("http://localhost:9093/api/v1/admin/addadmin", admin)
+        .post("http://localhost:9091/api/v1/auth/createAdmin", admin)
         .then((res) => {
           console.log(res.data);
           console.log("İşlem başarılı");
