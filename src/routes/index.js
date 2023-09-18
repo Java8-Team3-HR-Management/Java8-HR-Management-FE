@@ -12,6 +12,7 @@ import AdminRegister from "../pages/AdminRegister";
 import Calendar from "../pages/Calendar";
 import Profile from "../pages/Profile";
 import AddCompany from "../pages/Add Company";
+import Review from "../pages/Review";
 
 const ROLES = {
   ADMIN: "ADMIN",
@@ -103,6 +104,12 @@ export const routes = [
         component: AddCompany,
         path: "/add-company",
         role: ROLES.ADMIN,
+      },
+      {
+        name: "review",
+        title: "Review",
+        component: Review,
+        path: "/review",
       },
     ],
   },
