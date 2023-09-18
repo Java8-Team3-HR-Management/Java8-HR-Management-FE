@@ -15,36 +15,17 @@ const Profile = () => {
   const role = Cookies.get("decodeRole");
   const id = Cookies.get("decodeId");
   const [profile, setProfile] = useState([]);
-  localStorage.setItem("username",profile.name+" "+ profile.surname);
+  localStorage.setItem("username", profile.name + " " + profile.surname);
   useEffect(() => {
-    if (role === "EMPLOYEE") {
-      axios
-        .get(`http://localhost:9092/api/v1/employee/getEmployeeById/${id}`)
-        .then((res) => {
-          setProfile(res.data);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    } else if (role === "MANAGER") {
-      axios
-        .get("http://localhost:9094/api/v1/manager/getById")
-        .then((res) => {
-          setProfile(res.data);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    } else if (role === "ADMIN") {
-      axios
-        .get("http://localhost:9093/api/v1/admin/getById")
-        .then((res) => {
-          setProfile(res.data);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    }
+    axios
+      .get(`http://localhost:8082/api/v1/user/getEmployeeByAuthId/${id}`)
+      .then((res) => {
+        setProfile(res.data);
+        console.log(res.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }, []);
   return (
     <>
@@ -64,7 +45,7 @@ const Profile = () => {
             </div>
           </div>
 
-          <BasicProfile profile={profile}/>
+          <BasicProfile profile={profile} />
 
           <div className="tab-content">
             <ProfileTab />
