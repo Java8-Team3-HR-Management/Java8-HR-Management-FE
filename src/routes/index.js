@@ -13,6 +13,7 @@ import Calendar from "../pages/Calendar";
 import Profile from "../pages/Profile";
 import AddCompany from "../pages/Add Company";
 import Review from "../pages/Review";
+import Subscription from "../pages/Subcription";
 
 const ROLES = {
   ADMIN: "ADMIN",
@@ -57,6 +58,13 @@ export const routes = [
         title: "Admin Kayıt",
         component: AdminRegister,
         path: "/adminregister",
+        isPublic: true,
+      },
+      {
+        name: "subscriptoon",
+        title: "Abonelik",
+        component: Subscription,
+        path: "/subscription",
         isPublic: true,
       },
     ],
