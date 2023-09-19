@@ -56,6 +56,7 @@ const SideBar = () => {
                 <i className="la la-calendar"></i> <span>Takvim</span>
               </Link>
             </li>
+            <li className="menu-title">Yorum</li>
             <li>
               <Link to="/review">
                 <i className="la la-comments"></i> <span>Şirket Yorumları</span>

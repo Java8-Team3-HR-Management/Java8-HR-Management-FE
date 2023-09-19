@@ -40,7 +40,7 @@ const Employee = () => {
   };
   useEffect(() => {
     axios
-      .get(`http://localhost:8082/api/v1/user/findAllEmployee/TestCompany`)
+      .get(`http://localhost:8082/api/v1/user/findAllEmployee/1`)
       .then((res) => setEmployees(res.data))
       .catch((error) => {
         // Hata durumları da ele alınabilir
