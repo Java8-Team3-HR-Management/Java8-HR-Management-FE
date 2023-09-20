@@ -17,7 +17,7 @@ const AdminRegister = () => {
     console.log(admin);
     if (admin.password === rePassword) {
       axios
-        .post("http://localhost:9091/api/v1/auth/createAdmin", admin)
+        .post("http://localhost/auth/createAdmin", admin)
         .then((res) => {
           console.log(res.data);
           console.log("İşlem başarılı");

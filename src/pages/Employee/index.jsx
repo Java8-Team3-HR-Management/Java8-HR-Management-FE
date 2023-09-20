@@ -28,7 +28,7 @@ const Employee = () => {
     };
     console.log(auth);
     axios
-      .post("http://localhost:9091/api/v1/auth/createEmployee", auth)
+      .post("http://localhost/auth/createEmployee", auth)
       .then((res) => {
         console.log(res.data);
         setCount(count + 1);
@@ -40,7 +40,7 @@ const Employee = () => {
   };
   useEffect(() => {
     axios
-      .get(`http://localhost:8082/api/v1/user/findAllEmployee/1`)
+      .get(`http://localhost/v1/user/findAllEmployee/1`)
       .then((res) => setEmployees(res.data))
       .catch((error) => {
         // Hata durumları da ele alınabilir

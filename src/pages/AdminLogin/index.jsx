@@ -15,7 +15,7 @@ const AdminLogin = () => {
     };
 
     axios
-      .post("http://localhost:9091/api/v1/auth/login", login)
+      .post("http://localhost/auth/login", login)
       .then((res) => {
         console.log(res.data);
         if (res.data.role === "ADMIN") {

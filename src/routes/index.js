@@ -14,6 +14,9 @@ import Profile from "../pages/Profile";
 import AddCompany from "../pages/Add Company";
 import Review from "../pages/Review";
 import Subscription from "../pages/Subcription";
+import Expense from "../pages/Expense";
+import CreateExpense from "../pages/Create Expense";
+import ExpenseDetail from "../pages/ExpenseDetail";
 
 const ROLES = {
   ADMIN: "ADMIN",
@@ -118,6 +121,24 @@ export const routes = [
         title: "Review",
         component: Review,
         path: "/review",
+      },
+      {
+        name: "expense",
+        title: "Expense",
+        component: Expense,
+        path: "/expense",
+      },
+      {
+        name: "createExpense",
+        title: "Create Expense",
+        component: CreateExpense,
+        path: "/create-expense",
+      },
+      {
+        name: "expenseDetail",
+        title: "Expense Detail",
+        component: ExpenseDetail,
+        path: "/expense-detail",
       },
     ],
   },

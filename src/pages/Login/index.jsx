@@ -21,7 +21,6 @@ const Login = () => {
         password: e.target.password.value,
       };
     }
-
     axios
       .post("http://localhost/auth/login", login)
       .then((res) => {

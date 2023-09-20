@@ -18,7 +18,7 @@ const Profile = () => {
   localStorage.setItem("username", profile.name + " " + profile.surname);
   useEffect(() => {
     axios
-      .get(`http://localhost:8082/api/v1/user/getEmployeeByAuthId/${id}`)
+      .get(`http://localhost/user/getEmployeeByAuthId/${id}`)
       .then((res) => {
         setProfile(res.data);
         console.log(res.data);
