@@ -52,14 +52,14 @@ const AddCompany = () => {
      
     };
     console.log(manager);
-    axios.post("http://localhost:9091/api/v1/auth/createManager", manager).then((res) => {
+    axios.post("http://localhost/auth/createManager", manager).then((res) => {
       console.log(res.data);
       setCount(count + 1);
     });
   };
   useEffect(() => {
     axios
-      .get(`http://localhost:8080/api/v1/company/getAllCompany`)
+      .get(`http://localhost/company/getAllCompany`)
       .then((res) => {
         setCompanys(res.data);
         console.log(res.data);

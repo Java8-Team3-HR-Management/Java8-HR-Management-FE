@@ -11,7 +11,7 @@ const BasicProfile = ({profile}) => {
               <div className="profile-img-wrap">
                 <div className="profile-img">
                   <Link to="#">
-                    <img alt="" src="src/assets/img/profiles/avatar-02.jpg" />
+                    <img alt="" src="https://i.pravatar.cc/300?img=50" />
                   </Link>
                 </div>
               </div>
