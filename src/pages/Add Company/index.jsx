@@ -16,17 +16,17 @@ const AddCompany = () => {
       companyAddress: e.target.companyAddress.value,
       companyWebsite: e.target.companyWebsite.value,
       taxNumber: e.target.taxNumber.value,
-      status: "ACTIVATED",
+      status: "APPROVED",
     };
     console.log(company);
-    axios.post("http://localhost/company/addCompany", company).then((res) => {
+    axios.post("http://localhost/company/add-company", company).then((res) => {
       setCount(count + 1);
     });
   };
   const handleStatusChange = (company, newStatus) => {
     const updatedCompany = { ...company, status: newStatus };
     axios
-      .put(`http://localhost:8080/api/v1/company/updateCompany`, updatedCompany)
+      .put(`http://localhost:8080/api/v1/company/update-company`, updatedCompany)
       .then((res) => {
         // Şirketin durumu başarıyla güncellendi
         // Burada gerekirse bir bildirim veya başka bir işlem yapabilirsiniz.
@@ -59,7 +59,7 @@ const AddCompany = () => {
   };
   useEffect(() => {
     axios
-      .get(`http://localhost/company/getAllCompany`)
+      .get(`http://localhost/company/get-all-company`)
       .then((res) => {
         setCompanys(res.data);
         console.log(res.data);
@@ -148,14 +148,14 @@ const AddCompany = () => {
                           <div className="dropdown">
                             <button
                               className={`btn btn-sm btn-rounded dropdown-toggle ${
-                                company.status === "ACTIVATED"
+                                company.status === "APPROVED"
                                   ? "btn-success"
                                   : "btn-danger"
                               }`}
                               data-toggle="dropdown"
                               aria-expanded="false"
                             >
-                              {company.status === "ACTIVATED"
+                              {company.status === "APPROVED"
                                 ? "Aktif"
                                 : "Pasif"}
                             </button>
@@ -163,7 +163,7 @@ const AddCompany = () => {
                               <button
                                 className="dropdown-item"
                                 onClick={() =>
-                                  handleStatusChange(company, "ACTIVATED")
+                                  handleStatusChange(company, "APPROVED")
                                 }
                               >
                                 Aktif

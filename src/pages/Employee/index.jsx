@@ -71,20 +71,7 @@ const Employee = () => {
               >
                 <i className="fa fa-plus"></i> Çalışan Ekle
               </Link>
-              <div className="view-icons">
-                <Link
-                  to="employees.html"
-                  className="grid-view btn btn-link active"
-                >
-                  <i className="fa fa-th"></i>
-                </Link>
-                <Link
-                  to="employees-list.html"
-                  className="list-view btn btn-link"
-                >
-                  <i className="fa fa-bars"></i>
-                </Link>
-              </div>
+              
             </div>
           </div>
         </div>
