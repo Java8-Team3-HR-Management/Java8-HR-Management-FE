@@ -42,6 +42,25 @@ const Profile = () => {
                   <li className="breadcrumb-item active">Profil</li>
                 </ul>
               </div>
+              <div className="col-auto float-right ml-auto">
+                <Link
+                  to="#"
+                  className="btn add-btn ml-2"
+                  data-toggle="modal"
+                  data-target="#add_leaves"
+                >
+                  <i className="fa fa-plus"></i> İzin Talep
+                </Link>
+
+                <Link
+                  to="#"
+                  className="btn add-btn"
+                  data-toggle="modal"
+                  data-target="#add_debt"
+                >
+                  <i className="fa fa-plus"></i> Avans Talep
+                </Link>
+              </div>
             </div>
           </div>
 
@@ -61,6 +80,105 @@ const Profile = () => {
           <EducationInfo />
 
           <ExperienceInfo />
+
+          <div id="add_debt" className="modal custom-modal fade" role="dialog">
+            <div className="modal-dialog modal-dialog-centered" role="document">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h5 className="modal-title">Avans Talep</h5>
+                  <button
+                    type="button"
+                    className="close"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                  >
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div className="modal-body">
+                  <form>
+                    <div className="form-group">
+                      <label>
+                        Miktar <span className="text-danger">*</span>
+                      </label>
+                      <input className="form-control" type="number" />
+                    </div>
+                    <div className="form-group">
+                      <label>
+                        Açıklama <span className="text-danger">*</span>
+                      </label>
+                      <textarea className="form-control" rows="4"></textarea>
+                    </div>
+
+                    <div className="submit-section">
+                      <button className="btn btn-primary submit-btn">
+                        Talep Et
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            id="add_leaves"
+            className="modal custom-modal fade"
+            role="dialog"
+          >
+            <div className="modal-dialog modal-dialog-centered" role="document">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h5 className="modal-title">İzin Talep</h5>
+                  <button
+                    type="button"
+                    className="close"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                  >
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div className="modal-body">
+                  <form>
+                    <div className="form-group">
+                      <label className="col-form-label">
+                        Başlangıç Tarihi <span className="text-danger">*</span>
+                      </label>
+                      <div className="cal-icon">
+                        <input
+                          className="form-control datetimepicker"
+                          type="text"
+                        />
+                      </div>
+                    </div>
+                    <div className="form-group">
+                      <label className="col-form-label">
+                        Bitiş Tarihi <span className="text-danger">*</span>
+                      </label>
+                      <div className="cal-icon">
+                        <input
+                          className="form-control datetimepicker"
+                          type="text"
+                        />
+                      </div>
+                    </div>
+                    <div className="form-group">
+                      <label>
+                        Açıklama <span className="text-danger">*</span>
+                      </label>
+                      <textarea className="form-control" rows="4"></textarea>
+                    </div>
+
+                    <div className="submit-section">
+                      <button className="btn btn-primary submit-btn">
+                        Talep Et
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </>
