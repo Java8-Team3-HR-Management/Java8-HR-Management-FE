@@ -5,12 +5,13 @@ import axios from "axios";
 const Employee = () => {
   const [employees, setEmployees] = useState([]);
   const [count, setCount] = useState(0);
+  const companyId = localStorage.getItem("companyid");
+  const companyName = localStorage.getItem("companyName");
   const onSubmit = (e) => {
     e.preventDefault();
-    const nameSurnameConcat =
-      e.target.firstName.value + " " + e.target.lastName.value;
     const birthDateConvert = new Date(e.target.birthDate.value);
     const memberDateConvert = new Date(e.target.membershipDate.value);
+
     const auth = {
       name: e.target.firstName.value,
       surname: e.target.lastName.value,
@@ -23,8 +24,8 @@ const Employee = () => {
       phone: e.target.phone.value,
       membershipDate: memberDateConvert,
       salary: e.target.salary.value,
-      companyName: "TestCompany",
-      companyId: "1",
+      companyName: companyName,
+      companyId: companyId,
     };
     console.log(auth);
     axios
@@ -39,12 +40,22 @@ const Employee = () => {
       });
   };
   useEffect(() => {
+    console.log(companyId);
     axios
-      .get(`http://localhost/v1/user/findAllEmployee/1`)
+      .get(`http://localhost/user/findAllEmployee/${companyId}`)
       .then((res) => setEmployees(res.data))
       .catch((error) => {
-        // Hata durumları da ele alınabilir
-        console.error(error);
+        if (error.response) {
+          // Sunucudan gelen hata yanıtını işleme devam et
+          console.log("Sunucu Hata:", error.response.data);
+        } else if (error.request) {
+          // İstek yapılamadı hatasını işleme devam et
+          console.log("İstek Hatası:", error.request);
+        } else {
+          // Diğer hataları işleme devam et
+
+          console.log("Hata:", error.message);
+        }
       });
   }, [count]);
   return (
@@ -71,7 +82,6 @@ const Employee = () => {
               >
                 <i className="fa fa-plus"></i> Çalışan Ekle
               </Link>
-              
             </div>
           </div>
         </div>
@@ -153,9 +163,7 @@ const Employee = () => {
                   </div>
 
                   <h4 className="user-name m-t-10 mb-0 text-ellipsis">
-                    <Link to="#" >
-                      {employee.name}
-                    </Link>
+                    <Link to="#">{employee.name}</Link>
                   </h4>
                   <div className="small text-muted">{employee.department}</div>
                 </div>

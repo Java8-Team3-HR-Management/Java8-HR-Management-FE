@@ -9,6 +9,7 @@ const AdminLogin = () => {
   const [emailValid, setEmailValid] = useState(true);
   const [passwordValid, setPasswordValid] = useState(true);
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+  const [loginError, setLoginError] = useState(false);
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -43,12 +44,24 @@ const AdminLogin = () => {
           const decode = jwt_decode(token);
           Cookies.set("decodeRole", decode.role);
           Cookies.set("decodeId", decode.id);
+          
+        setLoginError(false);
           setShowSuccessAlert(true);
         }
       })
       .catch((error) => {
-        // Hata durumları da ele alınabilir
-        console.error(error);
+        setLoginError(true);
+        if (error.response) {
+          // Sunucudan gelen hata yanıtını işleme devam et
+          console.log("Sunucu Hata:", error.response.data);
+        } else if (error.request) {
+          // İstek yapılamadı hatasını işleme devam et
+          console.log("İstek Hatası:", error.request);
+        } else {
+          // Diğer hataları işleme devam et
+
+          console.log("Hata:", error.message);
+        }
       });
   };
 
@@ -147,6 +160,11 @@ const AdminLogin = () => {
                         style={{ width: "100%" }}
                       ></div>
                     </div>
+                  </div>
+                )}
+                {loginError && (
+                  <div className="alert alert-danger" role="alert">
+                    Kullanıcı Adı veya Şifrenizi Kontorl Ediniz...!
                   </div>
                 )}
               </form>
