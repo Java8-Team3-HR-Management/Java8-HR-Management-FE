@@ -29,14 +29,16 @@ const SideBar = () => {
             ) : (
               ""
             )}
-            <li className="menu-title">Şirket</li>
-            <li>
-              <Link className="active" to="/company">
-                <i className="la la-columns"></i> <span> Şirket Paneli</span>{" "}
-              </Link>
-            </li>
             {role === "ADMIN" || role === "MANAGER" ? (
               <>
+                <li className="menu-title">Şirket</li>
+                <li>
+                  <Link className="active" to="/company">
+                    <i className="la la-columns"></i>{" "}
+                    <span> Şirket Paneli</span>{" "}
+                  </Link>
+                </li>
+
                 <li>
                   <Link to="/employee">
                     <i className="la la-users"></i> <span> Çalışanlar</span>{" "}
@@ -45,17 +47,24 @@ const SideBar = () => {
               </>
             ) : (
               ""
-            )}{" "}
-            <li>
-              <Link to="/expense">
-                <i className="la la-money"></i> <span> Harcamalar</span>{" "}
-              </Link>
-            </li>
-            <li>
-              <Link to="/profile">
-                <i className="la la-user"></i> <span>Profilim</span>
-              </Link>
-            </li>
+            )}
+            {<li className="menu-title">Şirket</li>}
+            {role === "GUEST" ? (
+              ""
+            ) : (
+              <>
+                <li>
+                  <Link to="/expense">
+                    <i className="la la-money"></i> <span> Harcamalar</span>{" "}
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/profile">
+                    <i className="la la-user"></i> <span>Profilim</span>
+                  </Link>
+                </li>
+              </>
+            )}
             <li>
               <Link to="/calendar">
                 <i className="la la-calendar"></i> <span>Takvim</span>

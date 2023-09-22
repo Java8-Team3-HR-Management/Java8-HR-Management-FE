@@ -15,7 +15,7 @@ const Profile = () => {
   const role = Cookies.get("decodeRole");
   const id = Cookies.get("decodeId");
   const [profile, setProfile] = useState([]);
-  localStorage.setItem("username", profile.name + " " + profile.surname);
+  
   useEffect(() => {
     axios
       .get(`http://localhost/user/getEmployeeByAuthId/${id}`)
@@ -24,7 +24,17 @@ const Profile = () => {
         console.log(res.data);
       })
       .catch((error) => {
-        console.error(error);
+        if (error.response) {
+          // Sunucudan gelen hata yanıtını işleme devam et
+          console.log("Sunucu Hata:", error.response.data);
+        } else if (error.request) {
+          // İstek yapılamadı hatasını işleme devam et
+          console.log("İstek Hatası:", error.request);
+        } else {
+          // Diğer hataları işleme devam et
+
+          console.log("Hata:", error.message);
+        }
       });
   }, []);
   return (

@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const BasicProfile = ({profile}) => {
+const BasicProfile = ({ profile }) => {
   return (
     <div className="card mb-0">
       <div className="card-body">
@@ -19,7 +19,9 @@ const BasicProfile = ({profile}) => {
                 <div className="row">
                   <div className="col-md-5">
                     <div className="profile-info-left">
-                      <h3 className="user-name m-t-0 mb-0">{profile.name+` `+profile.surname}</h3>
+                      <h3 className="user-name m-t-0 mb-0">
+                        {profile.name + ` ` + profile.surname}
+                      </h3>
                       <h6 className="text-muted">{profile.department}</h6>
                       <small className="text-muted">{profile.title}</small>
                       <div className="staff-id">Çalışan ID : {profile.id}</div>
@@ -44,13 +46,15 @@ const BasicProfile = ({profile}) => {
                       </li>
                       <li>
                         <div className="title">Doğum Tarihi:</div>
-                        <div className="text">{profile.birthDate}</div>
+                        {profile.birthDate === null ? (
+                          <div className="text"></div>
+                        ) : (
+                          <div className="text">{profile.birthDate}</div>
+                        )}
                       </li>
                       <li>
                         <div className="title">Adres:</div>
-                        <div className="text">
-                          {profile.location}
-                        </div>
+                        <div className="text">{profile.location}</div>
                       </li>
                       <li>
                         <div className="title">Cinsiyet:</div>

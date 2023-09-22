@@ -1,8 +1,37 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./toggle.css";
+import axios from "axios";
 
 const Register = () => {
+  const navigate = useNavigate();
+  const onSubmit = (e) => {
+    e.preventDefault();
+
+    
+   const guest = {
+    name: e.target.name.value,
+    surname: e.target.surname.value,
+    email: e.target.email.value,
+    password: e.target.password.value,
+    passwordConfirm: e.target.rePassword.value,
+   }
+    axios
+      .post("http://localhost/auth/register", guest)
+      .then((res) => {console.log(res.data);
+       
+          setTimeout(() => {
+           alert("İşlem Başarılı");
+              navigate("/login");
+           
+          }, 2000); // 2 saniye sonra yönlendir
+        
+      })
+      .catch((error) => {
+        // Hata durumları da ele alınabilir
+        console.error(error);
+      });
+  };
   const [company, setCompany] = useState(false);
   return (
     <div className="main-wrapper">
@@ -24,7 +53,7 @@ const Register = () => {
             <div className="account-wrapper">
               <h3 className="account-title">Kayıt Ol</h3>
 
-              <form action="index.html">
+              <form onSubmit={onSubmit}>
                 <div className=" form-check form-check-inline">
                   <div className="onoffswitch-custom">
                     <input
@@ -85,23 +114,23 @@ const Register = () => {
                 )}
                 <div className="form-group">
                   <label>Ad</label>
-                  <input className="form-control" type="text" />
+                  <input className="form-control" type="text" name="name"/>
                 </div>
                 <div className="form-group">
                   <label>Soyad</label>
-                  <input className="form-control" type="text" />
+                  <input className="form-control" type="text" name="surname"/>
                 </div>
                 <div className="form-group">
                   <label>Email</label>
-                  <input className="form-control" type="text" />
+                  <input className="form-control" type="text" name="email"/>
                 </div>
                 <div className="form-group">
                   <label>Şifre</label>
-                  <input className="form-control" type="password" />
+                  <input className="form-control" type="password" name="password"/>
                 </div>
                 <div className="form-group">
                   <label>Şifre Tekrarı</label>
-                  <input className="form-control" type="password" />
+                  <input className="form-control" type="password" name="rePassword"/>
                 </div>
                 <div className="form-group text-center">
                   <button className="btn btn-primary account-btn" type="submit">

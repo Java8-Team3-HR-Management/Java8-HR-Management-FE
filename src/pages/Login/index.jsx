@@ -10,6 +10,7 @@ const Login = () => {
   const [emailValid, setEmailValid] = useState(true);
   const [passwordValid, setPasswordValid] = useState(true);
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+  const [loginError, setLoginError] = useState(false);
   const navigate = useNavigate();
 
   const onSubmit = (e) => {
@@ -42,26 +43,37 @@ const Login = () => {
     axios
       .post("http://localhost/auth/login", login)
       .then((res) => {
+        console.log(res.data);
         const token = res.data.token;
         Cookies.set("accessToken", token);
+        setLoginError(false);
         setShowSuccessAlert(true);
-       
-          setTimeout(() => {
-            if (res.data.role === "EMPLOYEE") {
-              navigate("/profile"); // Başarılı yanıt aldığınızda yönlendirme işlemi
-            } else if (res.data.role === "MANAGER") {
-              navigate("/company");
-            } else if (res.data.role === "ADMIN") {
-              navigate("/admin");
-            } else {
-              navigate("/calendar");
-            }
-          }, 3000); // 3 saniye sonra yönlendir
-        
+
+        setTimeout(() => {
+          if (res.data.role === "EMPLOYEE") {
+            navigate("/profile"); // Başarılı yanıt aldığınızda yönlendirme işlemi
+          } else if (res.data.role === "MANAGER") {
+            navigate("/company");
+          } else if (res.data.role === "ADMIN") {
+            navigate("/admin");
+          } else {
+            navigate("/calendar");
+          }
+        }, 3000); // 3 saniye sonra yönlendir
       })
       .catch((error) => {
-        // Hata durumları da ele alınabilir
-        console.error(error);
+        setLoginError(true);
+        if (error.response) {
+          // Sunucudan gelen hata yanıtını işleme devam et
+          console.log("Sunucu Hata:", error.response.data);
+        } else if (error.request) {
+          // İstek yapılamadı hatasını işleme devam et
+          console.log("İstek Hatası:", error.request);
+        } else {
+          // Diğer hataları işleme devam et
+
+          console.log("Hata:", error.message);
+        }
       });
   };
 
@@ -176,7 +188,7 @@ const Login = () => {
                 <div className="account-footer">
                   <p>
                     Henüz bir admin hesabınız yok mu?{" "}
-                    <Link to="/adminregister">Kayıt Ol</Link>
+                    <Link to="/register">Kayıt Ol</Link>
                   </p>
                 </div>
                 {showSuccessAlert && (
@@ -189,6 +201,11 @@ const Login = () => {
                         style={{ width: "100%" }}
                       ></div>
                     </div>
+                  </div>
+                )}
+                {loginError && (
+                  <div className="alert alert-danger" role="alert">
+                    Kullanıcı Adı veya Şifrenizi Kontorl Ediniz...!
                   </div>
                 )}
               </form>
