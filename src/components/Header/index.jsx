@@ -1,9 +1,9 @@
 import Cookies from "js-cookie";
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 
 const index = () => {
-  const username = localStorage.getItem("username");
+  var username = Cookies.get("username");
   var role = Cookies.get("decodeRole");
   var url = "/profile";
   if(role === "EMPLOYEE"){
@@ -14,8 +14,10 @@ const index = () => {
   else if(role === "MANAGER"){
     url = "/company";
   }else{
-    url = "/profile";
+    url = "/review";
   }
+  useEffect(()=>{
+  },[])
   return (
     <div className="header">
       <div className="header-left">
@@ -66,7 +68,7 @@ const index = () => {
                 Cookies.remove("accessToken");
                 Cookies.remove("decodeRole");
                 Cookies.remove("decodeId");
-                localStorage.removeItem("username");
+                Cookies.remove("username");
               }}
             >
               Çıkış

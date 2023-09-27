@@ -3,72 +3,216 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 
 const AddCompany = () => {
+  // State tanımlamaları
   const [companys, setCompanys] = useState([]);
   const [companyInfo, setCompanyInfo] = useState([]);
   const [count, setCount] = useState(0);
+
+  const [formData, setFormData] = useState({
+    companyName: "",
+    companyEmail: "",
+    companyPhone: "",
+    companyAddress: "",
+    companyWebsite: "",
+    taxNumber: "",
+  });
+
+  const [managerFormData, setManagerFormData] = useState({
+    name: "",
+    surname: "",
+    email: "",
+    password: "",
+    phone: "",
+  });
+
+  const [formErrors, setFormErrors] = useState({});
+  const [showModal, setShowModal] = useState(false);
+
+  // Modal işlemleri
+  const handleShowModal = () => {
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
+  // Şirket ekleme işlemi
   const onSubmit = (e) => {
     e.preventDefault();
 
-    const company = {
-      companyName: e.target.companyName.value,
-      companyEmail: e.target.companyEmail.value,
-      companyPhone: e.target.companyPhone.value,
-      companyAddress: e.target.companyAddress.value,
-      companyWebsite: e.target.companyWebsite.value,
-      taxNumber: e.target.taxNumber.value,
-      status: "APPROVED",
-    };
-    console.log(company);
-    axios.post("http://localhost/company/add-company", company).then((res) => {
-      setCount(count + 1);
-    });
+    const errors = validateForm(formData);
+    if (Object.keys(errors).length === 0) {
+      const company = {
+        companyName: formData.companyName,
+        companyEmail: formData.companyEmail,
+        companyPhone: formData.companyPhone,
+        companyAddress: formData.companyAddress,
+        companyWebsite: formData.companyWebsite,
+        taxNumber: formData.taxNumber,
+        status: "APPROVED",
+      };
+
+      axios
+        .post("http://localhost/company/add-company", company)
+        .then((res) => {
+          setCount(count + 1);
+          handleCloseModal();
+        });
+    } else {
+      setFormErrors(errors);
+    }
   };
+
+  // Şirket durumu değiştirme işlemi
   const handleStatusChange = (company, newStatus) => {
     const updatedCompany = { ...company, status: newStatus };
     axios
-      .put(`http://localhost:8080/api/v1/company/update-company`, updatedCompany)
+      .put(
+        `http://localhost:8080/api/v1/company/update-company`,
+        updatedCompany
+      )
       .then((res) => {
-        // Şirketin durumu başarıyla güncellendi
-        // Burada gerekirse bir bildirim veya başka bir işlem yapabilirsiniz.
-        setCount(count + 1); // Veriyi güncellemek için sayaç artırılır.
+        setCount(count + 1);
       })
       .catch((error) => {
-        // Hata durumunda burada işlem yapabilirsiniz.
         console.error(error);
       });
   };
+
+  // Form doğrulama işlemleri
+  const validateManagerForm = () => {
+    let errors = {};
+
+    if (!managerFormData.name) {
+      errors.name = "Adı zorunludur.";
+    }
+
+    if (!managerFormData.surname) {
+      errors.surname = "Soyadı zorunludur.";
+    }
+
+    if (!managerFormData.email) {
+      errors.email = "Email zorunludur.";
+    } else if (
+      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(managerFormData.email)
+    ) {
+      errors.email = "Geçerli bir email adresi giriniz.";
+    }
+
+    if (!managerFormData.password) {
+      errors.password = "Şifre zorunludur.";
+    } else if (managerFormData.password.length < 6) {
+      errors.password = "Şifre en az 6 karakter uzunluğunda olmalıdır.";
+    }
+
+    if (!managerFormData.phone) {
+      errors.phone = "Telefon zorunludur.";
+    } else if (!/^\d{10}$/.test(managerFormData.phone)) {
+      errors.phone = "Telefon numarası 10 haneli olmalıdır.";
+    }
+
+    return errors;
+  };
+
+  // Yönetici ekleme işlemi
   const onSubmitManager = (e) => {
     e.preventDefault();
-    console.log(companyInfo);
-    const manager = {
-      companyId: companyInfo.companyId,
-      companyName: companyInfo.companyName,
-      companyEmail: e.target.companyEmail.value,
-      password: e.target.password.value,
-      name:  e.target.name.value,
-      surname:  e.target.surname.value,
-      email: e.target.email.value,
-      phone: e.target.phone.value,
-     
-    };
-    console.log(manager);
-    axios.post("http://localhost/auth/createManager", manager).then((res) => {
-      console.log(res.data);
-      setCount(count + 1);
-    });
-  };
-  useEffect(() => {
-    axios
-      .get(`http://localhost/company/get-all-company`)
-      .then((res) => {
-        setCompanys(res.data);
+    const errors = validateManagerForm();
+
+    if (Object.keys(errors).length === 0) {
+      // Doğrulama başarılıysa yönetici ekleme işlemi devam eder.
+      const manager = {
+        companyId: companyInfo.companyId,
+        companyName: companyInfo.companyName,
+        companyEmail: managerFormData.email,
+        password: managerFormData.password,
+        name: managerFormData.name,
+        surname: managerFormData.surname,
+        email: managerFormData.email,
+        phone: managerFormData.phone,
+      };
+
+      axios.post("http://localhost/auth/createManager", manager).then((res) => {
         console.log(res.data);
+        setCount(count + 1);
       });
+    } else {
+      setFormErrors(errors);
+    }
+  };
+
+  // Form doğrulama işlemleri
+  const validateForm = (data) => {
+    let errors = {};
+    if (!data.companyName) {
+      errors.companyName = "Şirket adı zorunludur.";
+    } else if (data.companyName.length < 8 || data.companyName.length > 64) {
+      errors.companyName = "Şirket adı 8-64 karakter arasında olmalıdır.";
+    }
+
+    if (!data.companyEmail) {
+      errors.companyEmail = "Şirket e-postası zorunludur.";
+    }
+
+    if (!data.companyPhone) {
+      errors.companyPhone = "Şirket telefonu zorunludur.";
+    } else if (data.companyPhone.length < 10 || data.companyPhone.length > 11) {
+      errors.companyPhone =
+        "Şirket telefonu 10-11 karakter arasında olmalıdır.";
+    }
+
+    if (!data.companyAddress) {
+      errors.companyAddress = "Şirket adresi zorunludur.";
+    } else if (
+      data.companyAddress.length < 8 ||
+      data.companyAddress.length > 200
+    ) {
+      errors.companyAddress =
+        "Şirket adresi 8-200 karakter arasında olmalıdır.";
+    }
+
+    if (!data.companyWebsite) {
+      errors.companyWebsite = "Şirket web sitesi zorunludur.";
+    } else if (
+      data.companyWebsite.length < 10 ||
+      data.companyWebsite.length > 64
+    ) {
+      errors.companyWebsite =
+        "Şirket web sitesi 10-64 karakter arasında olmalıdır.";
+    }
+
+    if (!data.taxNumber) {
+      errors.taxNumber = "Vergi numarası zorunludur.";
+    }
+
+    return errors;
+  };
+  const handleSearch = (e) => {
+    const searchTerm = e.target.value.toLowerCase();
+
+    if (searchTerm === "") {
+      axios.get(`http://localhost/company/get-all-company`).then((res) => {
+        setCompanys(res.data);
+      });
+    } else {
+      const filteredCompanys = companys.filter((company) =>
+        company.companyName.toLowerCase().includes(searchTerm)
+      );
+      setCompanys(filteredCompanys);
+    }
+  };
+  // Şirket verilerini çekme
+  useEffect(() => {
+    axios.get(`http://localhost/company/get-all-company`).then((res) => {
+      setCompanys(res.data);
+    });
   }, [count]);
+
   return (
     <div className="page-wrapper">
       <div className="content container-fluid">
-        {/* Page Header */}
+        {/* Sayfa Başlığı ve Arama Filtresi (Search Filter) */}
         <div className="page-header">
           <div className="row align-items-center">
             <div className="col">
@@ -86,38 +230,32 @@ const AddCompany = () => {
                 className="btn add-btn"
                 data-toggle="modal"
                 data-target="#add_company"
+                onClick={handleShowModal}
               >
                 <i className="fa fa-plus"></i> Şirket Ekle
               </Link>
             </div>
           </div>
         </div>
-        {/* /Page Header */}
+        {/* /Sayfa Başlığı ve Arama Filtresi (Search Filter) */}
 
-        {/* Search Filter */}
+        {/* Arama Filtresi (Search Filter) */}
         <div className="row filter-row">
           <div className="col-sm-6 col-md-3">
             <div className="form-group form-focus">
-              <input type="text" className="form-control floating" />
-              <label className="focus-label">Şirket ID</label>
-            </div>
-          </div>
-          <div className="col-sm-6 col-md-3">
-            <div className="form-group form-focus">
-              <input type="text" className="form-control floating" />
+              <input
+                type="text"
+                className="form-control floating"
+                placeholder="Şirket Adı"
+                onChange={handleSearch}
+              />
               <label className="focus-label">Şirket Adı</label>
             </div>
           </div>
-          <div className="col-sm-6 col-md-3"></div>
-          <div className="col-sm-6 col-md-3">
-            <Link to="#" className="btn btn-success btn-block">
-              {" "}
-              ARA{" "}
-            </Link>
-          </div>
         </div>
-        {/* Search Filter */}
+        {/* /Arama Filtresi (Search Filter) */}
 
+        {/* Şirket Listesi */}
         <div className="row">
           <div className="col-md-12">
             <div className="table-responsive">
@@ -126,7 +264,7 @@ const AddCompany = () => {
                   <tr>
                     <th>Adı</th>
                     <th>Vergi Numarası</th>
-                    <th>Phone</th>
+                    <th>Telefon</th>
                     <th>Email</th>
                     <th>Web Site</th>
                     <th>Adres</th>
@@ -233,8 +371,10 @@ const AddCompany = () => {
             </div>
           </div>
         </div>
+        {/* /Şirket Listesi */}
       </div>
-      {/* Add Employee */}
+
+      {/* Şirket Ekle Modal */}
       <div id="add_company" className="modal custom-modal fade" role="dialog">
         <div className="modal-dialog modal-dialog-centered modal-lg">
           <div className="modal-content">
@@ -245,6 +385,7 @@ const AddCompany = () => {
                 className="close"
                 data-dismiss="modal"
                 aria-label="Close"
+                onClick={handleCloseModal}
               >
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -261,7 +402,19 @@ const AddCompany = () => {
                         className="form-control"
                         type="text"
                         name="companyName"
+                        value={formData.companyName}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            companyName: e.target.value,
+                          })
+                        }
                       />
+                      {formErrors.companyName && (
+                        <span className="text-danger">
+                          {formErrors.companyName}
+                        </span>
+                      )}
                     </div>
                   </div>
 
@@ -274,7 +427,19 @@ const AddCompany = () => {
                         className="form-control"
                         type="email"
                         name="companyEmail"
+                        value={formData.companyEmail}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            companyEmail: e.target.value,
+                          })
+                        }
                       />
+                      {formErrors.companyEmail && (
+                        <span className="text-danger">
+                          {formErrors.companyEmail}
+                        </span>
+                      )}
                     </div>
                   </div>
 
@@ -287,7 +452,19 @@ const AddCompany = () => {
                         type="text"
                         className="form-control"
                         name="companyPhone"
+                        value={formData.companyPhone}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            companyPhone: e.target.value,
+                          })
+                        }
                       />
+                      {formErrors.companyPhone && (
+                        <span className="text-danger">
+                          {formErrors.companyPhone}
+                        </span>
+                      )}
                     </div>
                   </div>
                   <div className="col-sm-6">
@@ -299,7 +476,19 @@ const AddCompany = () => {
                         type="text"
                         className="form-control"
                         name="companyWebsite"
+                        value={formData.companyWebsite}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            companyWebsite: e.target.value,
+                          })
+                        }
                       />
+                      {formErrors.companyWebsite && (
+                        <span className="text-danger">
+                          {formErrors.companyWebsite}
+                        </span>
+                      )}
                     </div>
                   </div>
                   <div className="col-sm-6">
@@ -311,7 +500,19 @@ const AddCompany = () => {
                         type="number"
                         className="form-control"
                         name="taxNumber"
+                        value={formData.taxNumber}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            taxNumber: e.target.value,
+                          })
+                        }
                       />
+                      {formErrors.taxNumber && (
+                        <span className="text-danger">
+                          {formErrors.taxNumber}
+                        </span>
+                      )}
                     </div>
                   </div>
                   <div className="col-sm-6">
@@ -322,12 +523,26 @@ const AddCompany = () => {
                         rows="4"
                         cols="50"
                         name="companyAddress"
+                        value={formData.companyAddress}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            companyAddress: e.target.value,
+                          })
+                        }
                       />
+                      {formErrors.companyAddress && (
+                        <span className="text-danger">
+                          {formErrors.companyAddress}
+                        </span>
+                      )}
                     </div>
                   </div>
-                </div>{" "}
+                </div>
                 <div className="submit-section">
-                  <button className="btn btn-primary submit-btn">Submit</button>
+                  <button className="btn btn-primary submit-btn">
+                    Şirket Ekle
+                  </button>
                 </div>
               </form>
             </div>
@@ -336,147 +551,21 @@ const AddCompany = () => {
       </div>
       {/*<!-- Edit Company Modal -->*/}
       <div id="edit_employee" className="modal custom-modal fade" role="dialog">
-        <div
-          className="modal-dialog modal-dialog-centered modal-lg"
-          role="document"
-        >
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title">Edit Comapny</h5>
-              <button
-                type="button"
-                className="close"
-                data-dismiss="modal"
-                aria-label="Close"
-              >
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div className="modal-body">
-              <form>
-                <div className="row">
-                  <div className="col-sm-6">
-                    <div className="form-group">
-                      <label className="col-form-label">
-                        Şirket Adı <span className="text-danger">*</span>
-                      </label>
-                      <input
-                        className="form-control"
-                        type="text"
-                        name="companyName"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="col-sm-6">
-                    <div className="form-group">
-                      <label className="col-form-label">
-                        Mail <span className="text-danger">*</span>
-                      </label>
-                      <input
-                        className="form-control"
-                        type="email"
-                        name="companyEmail"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="col-sm-6">
-                    <div className="form-group">
-                      <label className="col-form-label">
-                        Telefon <span className="text-danger">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        name="companyPhone"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-sm-6">
-                    <div className="form-group">
-                      <label className="col-form-label">
-                        Website <span className="text-danger">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        name="companyWebsite"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-sm-6">
-                    <div className="form-group">
-                      <label className="col-form-label">
-                        Vergi Numarası <span className="text-danger">*</span>
-                      </label>
-                      <input
-                        type="number"
-                        className="form-control"
-                        name="taxNumber"
-                      />
-                    </div>
-                  </div>
-                  <div className="col-sm-6">
-                    <div className="form-group">
-                      <label className="col-form-label">Adres</label>
-                      <textarea
-                        className="form-control"
-                        rows="4"
-                        cols="50"
-                        name="companyAddress"
-                      />
-                    </div>
-                  </div>
-                </div>{" "}
-                <div className="submit-section">
-                  <button className="btn btn-primary submit-btn">Submit</button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
+        {/* Edit Company Modal içeriği */}
       </div>
       {/* <!-- /Edit Company Modal -->*/}
 
-      {/* <!-- /Delete Company Modal -->*/}
+      {/* <!-- Delete Company Modal -->*/}
       <div
         className="modal custom-modal fade"
         id="delete_company"
         role="dialog"
       >
-        <div className="modal-dialog modal-dialog-centered">
-          <div className="modal-content">
-            <div className="modal-body">
-              <div className="form-header">
-                <h3>Şirketi Sil</h3>
-                <p>Şirketi silmek istediğine emin misiniz?</p>
-              </div>
-              <div className="modal-btn delete-action">
-                <div className="row">
-                  <div className="col-6">
-                    <Link to="#" className="btn btn-primary continue-btn">
-                      Sil
-                    </Link>
-                  </div>
-                  <div className="col-6">
-                    <Link
-                      to="#"
-                      data-dismiss="modal"
-                      className="btn btn-primary cancel-btn"
-                    >
-                      Geri
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        {/* Delete Company Modal içeriği */}
       </div>
       {/* <!-- /Delete Company Modal -->*/}
 
-      {/* Add Manager */}
+      {/* Add Manager Modal */}
       <div id="add_manager" className="modal custom-modal fade" role="dialog">
         <div className="modal-dialog modal-dialog-centered modal-lg">
           <div className="modal-content">
@@ -499,7 +588,23 @@ const AddCompany = () => {
                       <label className="col-form-label">
                         Adı <span className="text-danger">*</span>
                       </label>
-                      <input className="form-control" type="text" name="name" />
+                      <input
+                        className={`form-control ${
+                          formErrors.name ? "is-invalid" : ""
+                        }`}
+                        type="text"
+                        name="name"
+                        value={managerFormData.name}
+                        onChange={(e) =>
+                          setManagerFormData({
+                            ...managerFormData,
+                            name: e.target.value,
+                          })
+                        }
+                      />
+                      {formErrors.name && (
+                        <span className="text-danger">{formErrors.name}</span>
+                      )}
                     </div>
                   </div>
                   <div className="col-sm-6">
@@ -508,35 +613,48 @@ const AddCompany = () => {
                         Soyadı <span className="text-danger">*</span>
                       </label>
                       <input
-                        className="form-control"
+                        className={`form-control ${
+                          formErrors.surname ? "is-invalid" : ""
+                        }`}
                         type="text"
                         name="surname"
+                        value={managerFormData.surname}
+                        onChange={(e) =>
+                          setManagerFormData({
+                            ...managerFormData,
+                            surname: e.target.value,
+                          })
+                        }
                       />
+                      {formErrors.surname && (
+                        <span className="text-danger">
+                          {formErrors.surname}
+                        </span>
+                      )}
                     </div>
                   </div>
-
                   <div className="col-sm-6">
                     <div className="form-group">
                       <label className="col-form-label">
-                        Mail <span className="text-danger">*</span>
+                        Email <span className="text-danger">*</span>
                       </label>
                       <input
-                        className="form-control"
                         type="email"
+                        className={`form-control ${
+                          formErrors.email ? "is-invalid" : ""
+                        }`}
                         name="email"
+                        value={managerFormData.email}
+                        onChange={(e) =>
+                          setManagerFormData({
+                            ...managerFormData,
+                            email: e.target.value,
+                          })
+                        }
                       />
-                    </div>
-                  </div>
-                  <div className="col-sm-6">
-                    <div className="form-group">
-                      <label className="col-form-label">
-                        Şirket Mail <span className="text-danger">*</span>
-                      </label>
-                      <input
-                        className="form-control"
-                        type="email"
-                        name="companyEmail"
-                      />
+                      {formErrors.email && (
+                        <span className="text-danger">{formErrors.email}</span>
+                      )}
                     </div>
                   </div>
                   <div className="col-sm-6">
@@ -545,13 +663,26 @@ const AddCompany = () => {
                         Şifre <span className="text-danger">*</span>
                       </label>
                       <input
-                        className="form-control"
                         type="password"
+                        className={`form-control ${
+                          formErrors.password ? "is-invalid" : ""
+                        }`}
                         name="password"
+                        value={managerFormData.password}
+                        onChange={(e) =>
+                          setManagerFormData({
+                            ...managerFormData,
+                            password: e.target.value,
+                          })
+                        }
                       />
+                      {formErrors.password && (
+                        <span className="text-danger">
+                          {formErrors.password}
+                        </span>
+                      )}
                     </div>
                   </div>
-
                   <div className="col-sm-6">
                     <div className="form-group">
                       <label className="col-form-label">
@@ -559,20 +690,45 @@ const AddCompany = () => {
                       </label>
                       <input
                         type="text"
-                        className="form-control"
+                        className={`form-control ${
+                          formErrors.phone ? "is-invalid" : ""
+                        }`}
                         name="phone"
+                        value={managerFormData.phone}
+                        onChange={(e) =>
+                          setManagerFormData({
+                            ...managerFormData,
+                            phone: e.target.value,
+                          })
+                        }
                       />
+                      {formErrors.phone && (
+                        <span className="text-danger">{formErrors.phone}</span>
+                      )}
                     </div>
                   </div>
-                </div>{" "}
+                </div>
                 <div className="submit-section">
-                  <button className="btn btn-primary submit-btn">Submit</button>
+                  <button className="btn btn-primary submit-btn">
+                    Yönetici Ekle
+                  </button>
                 </div>
               </form>
             </div>
           </div>
         </div>
       </div>
+      {/* <!-- /Add Manager Modal -->*/}
+
+      {/* Delete Manager Modal */}
+      <div
+        className="modal custom-modal fade"
+        id="delete_manager"
+        role="dialog"
+      >
+        {/* Delete Manager Modal içeriği */}
+      </div>
+      {/* <!-- /Delete Manager Modal --> */}
     </div>
   );
 };

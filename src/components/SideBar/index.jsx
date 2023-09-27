@@ -48,11 +48,12 @@ const SideBar = () => {
             ) : (
               ""
             )}
-            {<li className="menu-title">Şirket</li>}
+           
             {role === "GUEST" ? (
               ""
             ) : (
               <>
+               {<li className="menu-title">Şirket</li>}
                 <li>
                   <Link to="/expense">
                     <i className="la la-money"></i> <span> Harcamalar</span>{" "}
@@ -65,6 +66,7 @@ const SideBar = () => {
                 </li>
               </>
             )}
+            <li className="menu-title">Takvim</li>
             <li>
               <Link to="/calendar">
                 <i className="la la-calendar"></i> <span>Takvim</span>
