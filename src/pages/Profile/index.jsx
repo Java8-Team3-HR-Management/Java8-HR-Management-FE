@@ -15,13 +15,12 @@ const Profile = () => {
   const role = Cookies.get("decodeRole");
   const id = Cookies.get("decodeId");
   const [profile, setProfile] = useState([]);
-  
+
   useEffect(() => {
     axios
       .get(`http://localhost/user/getEmployeeByAuthId/${id}`)
       .then((res) => {
         setProfile(res.data);
-        console.log(res.data);
       })
       .catch((error) => {
         if (error.response) {
@@ -52,25 +51,27 @@ const Profile = () => {
                   <li className="breadcrumb-item active">Profil</li>
                 </ul>
               </div>
-              <div className="col-auto float-right ml-auto">
-                <Link
-                  to="#"
-                  className="btn add-btn ml-2"
-                  data-toggle="modal"
-                  data-target="#add_leaves"
-                >
-                  <i className="fa fa-plus"></i> İzin Talep
-                </Link>
+              {role === "EMPLOYEE" && (
+                <div className="col-auto float-right ml-auto">
+                  <Link
+                    to="#"
+                    className="btn add-btn ml-2"
+                    data-toggle="modal"
+                    data-target="#add_leaves"
+                  >
+                    <i className="fa fa-plus"></i> İzin Talep
+                  </Link>
 
-                <Link
-                  to="#"
-                  className="btn add-btn"
-                  data-toggle="modal"
-                  data-target="#add_debt"
-                >
-                  <i className="fa fa-plus"></i> Avans Talep
-                </Link>
-              </div>
+                  <Link
+                    to="#"
+                    className="btn add-btn"
+                    data-toggle="modal"
+                    data-target="#add_debt"
+                  >
+                    <i className="fa fa-plus"></i> Avans Talep
+                  </Link>
+                </div>
+              )}
             </div>
           </div>
 

@@ -56,6 +56,8 @@ const Login = () => {
             navigate("/company");
           } else if (res.data.role === "ADMIN") {
             navigate("/admin");
+          } else if (res.data.role === "GUEST") {
+            navigate("/review");
           } else {
             navigate("/calendar");
           }

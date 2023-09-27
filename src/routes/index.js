@@ -36,6 +36,13 @@ export const routes = [
         isPublic: true,
       },
       {
+        name: "login",
+        title: "Giriş Yap",
+        component: Login,
+        path: "/",
+        isPublic: true,
+      },
+      {
         name: "register",
         title: "Kayıt Ol",
         component: Register,

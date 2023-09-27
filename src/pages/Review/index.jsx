@@ -19,9 +19,28 @@ const StarRating = ({ rating, onChange }) => {
 
 const Review = () => {
   const [comments, setComments] = useState([]);
+  const [companys, setComapnys] = useState([]);
   const [count, setCount] = useState(0);
   const [rating, setRating] = useState(0); // Yıldız derecesini tutmak için bir state
+  const [selectedCompanyName, setSelectedCompanyName] = useState("Select");
+  const [selectedCompanyId, setSelectedCompanyId] = useState(null);
 
+  const onCompanyChange = (e) => {
+    const selectedValue = e.target.value;
+    const selectedCompany = companys.find(
+      (company) => company.id === selectedValue
+    );
+
+    if (selectedCompany) {
+      setSelectedCompanyName(selectedCompany.companyName);
+      console.log(selectedCompany.companyName);
+      setSelectedCompanyId(selectedCompany.id);
+      console.log(selectedCompany.id);
+    } else {
+      setSelectedCompanyName("Şirket Seçiniz");
+      setSelectedCompanyId(null);
+    }
+  };
   const onSubmit = (e) => {
     e.preventDefault();
 
@@ -50,21 +69,36 @@ const Review = () => {
   };
 
   useEffect(() => {
+    axios.get("http://localhost/company/get-all-company").then((res) => {
+      setComapnys(res.data);
+    });
+
     axios
       .get("http://localhost/comment/get-all-pending-comment")
       .then((res) => {
         setComments(res.data);
-        console.log(res.data);
       });
   }, [count]);
 
   return (
     <div className="page-wrapper">
       <div className="content container-fluid">
+        <h1 className="mb-2">{selectedCompanyName}</h1>
+        <div className="col-lg-9">
+          <select className="select" onChange={onCompanyChange}>
+            <option>Select</option>
+            {companys.map((company) => (
+              <option key={company.id} value={company.id}>
+                {company.companyName}
+              </option>
+            ))}
+          </select>
+        </div>
+
         <div className="col-md-8 course-details-content">
           <div className="course-details-card mt--40">
             <div className="course-content">
-              <h5 className="mb--20">Review</h5>
+              <h5 className="mb--20">Yorum</h5>
               <div className="row row--30">
                 <div className="col-lg-4">
                   <div className="rating-box">
@@ -98,81 +132,89 @@ const Review = () => {
               </div>
               <div className="comment-wrapper pt--40">
                 <div className="section-title">
-                  <h5 className="mb--25">Reviews</h5>
+                  <h5 className="mb--25">Yorumlar</h5>
                 </div>
-                {comments.map((comment) => (
-                  <div className="edu-comment" key={comment.id}>
-                    <div className="thumbnail">
-                      {" "}
-                      <img
-                        src="https://picsum.photos/200"
-                        alt="Comment Images"
-                      />{" "}
-                    </div>
-                    <div className="comment-content">
-                      <div className="comment-top">
-                        <h6 className="title">{comment.commentSubject}</h6>
-                        <StarRating rating={comment.rate} />{" "}
-                        {/* Yıldızlı derecelendirme bileşeni */}
+                {selectedCompanyId ? (
+                  comments.map((comment) => (
+                    <div className="edu-comment" key={comment.id}>
+                      <div className="thumbnail">
+                        {" "}
+                        <img
+                          src="https://picsum.photos/200"
+                          alt="Comment Images"
+                        />{" "}
                       </div>
-                      <span className="subtitle">
-                        "{comment.commentSubject}"
-                      </span>
-                      <p>{comment.commentContent}</p>
+                      <div className="comment-content">
+                        <div className="comment-top">
+                          <h6 className="title">{comment.commentSubject}</h6>
+                          <StarRating rating={comment.rate} />{" "}
+                          {/* Yıldızlı derecelendirme bileşeni */}
+                        </div>
+                        <span className="subtitle">
+                          "{comment.commentSubject}"
+                        </span>
+                        <p>{comment.commentContent}</p>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))
+                ) : (
+                  <hr></hr>
+                )}
                 {/* Diğer yorumlar için aynı modeli tekrarlayın */}
               </div>
-              <div className="row">
-                <div className="col-md-12">
-                  <div className="card mb-0">
-                    <div className="card-header">
-                      <h4 className="card-title mb-0">Yorum Yap</h4>
-                    </div>
-                    <div className="card-body">
-                      <form onSubmit={onSubmit}>
-                        <div className="row">
-                          <div className="col-md-6">
-                            <div className="form-group">
-                              <label>Başlık:</label>
-                              <input
-                                type="text"
-                                className="form-control"
-                                name="commentSubject"
-                              />
-                            </div>
+              {selectedCompanyId ? (
+                <div className="row">
+                  <div className="col-md-12">
+                    <div className="card mb-0">
+                      <div className="card-header">
+                        <h4 className="card-title mb-0">Yorum Yap</h4>
+                      </div>
+                      <div className="card-body">
+                        <form onSubmit={onSubmit}>
+                          <div className="row">
+                            <div className="col-md-6">
+                              <div className="form-group">
+                                <label>Başlık:</label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  name="commentSubject"
+                                />
+                              </div>
 
-                            <div className="form-group">
-                              <label>Yorumunuz:</label>
-                              <textarea
-                                rows="5"
-                                cols="15"
-                                className="form-control"
-                                placeholder="Enter message"
-                                name="commentContent"
-                              ></textarea>
-                            </div>
-                            <div className="form-group">
-                              <label>Yıldız Derecesi:</label>
-                              <StarRating
-                                style={{ cursor: "pointer" }}
-                                rating={rating}
-                                onChange={setRating}
-                              />
+                              <div className="form-group">
+                                <label>Yorumunuz:</label>
+                                <textarea
+                                  rows="5"
+                                  cols="15"
+                                  className="form-control"
+                                  placeholder="Enter message"
+                                  name="commentContent"
+                                ></textarea>
+                              </div>
+                              <div className="form-group">
+                                <label>Yıldız Derecesi:</label>
+                                <StarRating
+                                  style={{ cursor: "pointer" }}
+                                  rating={rating}
+                                  onChange={setRating}
+                                />
+                              </div>
                             </div>
                           </div>
-                        </div>
-                        <div className="text-middle">
-                          <button type="submit" className="btn btn-primary">
-                            Submit
-                          </button>
-                        </div>
-                      </form>
+                          <div className="text-middle">
+                            <button type="submit" className="btn btn-primary">
+                              Submit
+                            </button>
+                          </div>
+                        </form>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              ) : (
+                <p>Lütfen bir şirket seçiniz.</p>
+              )}
             </div>
           </div>
         </div>

@@ -1,43 +1,110 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 const Employee = () => {
   const [employees, setEmployees] = useState([]);
   const [count, setCount] = useState(0);
-  const companyId = localStorage.getItem("companyid");
-  const companyName = localStorage.getItem("companyName");
+  const companyId = Cookies.get("companyid");
+  const companyName = Cookies.get("companyName");
+  const [formErrors, setFormErrors] = useState({});
+
+  const validateForm = (formData) => {
+    const errors = {};
+
+    if (!formData.firstName) {
+      errors.firstName = "Ad alanı zorunludur.";
+    }
+
+    if (!formData.lastName) {
+      errors.lastName = "Soyad alanı zorunludur.";
+    }
+
+    if (!formData.email) {
+      errors.email = "E-posta alanı zorunludur.";
+    } else if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
+      errors.email = "Geçersiz e-posta adresi.";
+    }
+
+    if (!formData.birthPlace) {
+      errors.birthPlace = "Doğum Yeri alanı zorunludur.";
+    }
+
+    if (!formData.birthDate) {
+      errors.birthDate = "Doğum Tarihi alanı zorunludur.";
+    }
+    if (!formData.title) {
+      errors.title = "Ünvan alanı zorunludur.";
+    }
+
+    if (!formData.department) {
+      errors.department = "Departman alanı zorunludur.";
+    }
+    if (!formData.location) {
+      errors.location = "Konum alanı zorunludur.";
+    }
+
+    if (!formData.membershipDate) {
+      errors.membershipDate = "Üyelik Tarihi alanı zorunludur.";
+    }
+    if (!formData.phone) {
+      errors.phone = "Telefon alanı zorunludur.";
+    }
+
+    if (!formData.salary) {
+      errors.salary = "Maaş alanı zorunludur.";
+    } else if (isNaN(formData.salary)) {
+      errors.salary = "Maaş bir sayı olmalıdır.";
+    }
+
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
   const onSubmit = (e) => {
     e.preventDefault();
-    const birthDateConvert = new Date(e.target.birthDate.value);
-    const memberDateConvert = new Date(e.target.membershipDate.value);
-
     const auth = {
-      name: e.target.firstName.value,
-      surname: e.target.lastName.value,
+      firstName: e.target.firstName.value,
+      lastName: e.target.lastName.value,
       email: e.target.email.value,
       birthPlace: e.target.birthPlace.value,
-      birthDate: birthDateConvert,
+      birthDate: e.target.birthDate.value,
       department: e.target.department.value,
       title: e.target.title.value,
       location: e.target.location.value,
       phone: e.target.phone.value,
-      membershipDate: memberDateConvert,
+      membershipDate: e.target.membershipDate.value,
       salary: e.target.salary.value,
       companyName: companyName,
       companyId: companyId,
     };
-    console.log(auth);
-    axios
-      .post("http://localhost/auth/createEmployee", auth)
-      .then((res) => {
-        console.log(res.data);
-        setCount(count + 1);
-      })
-      .catch((error) => {
-        // Hata durumları da ele alınabilir
-        console.error(error);
-      });
+
+    if (validateForm(auth)) {
+      axios
+        .post("http://localhost/auth/createEmployee", auth)
+        .then((res) => {
+          console.log(res.data);
+          setCount(count + 1);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  };
+  const handleSearch = (e) => {
+    const searchTerm = e.target.value.toLowerCase();
+
+    if (searchTerm === "") {
+      axios
+        .get(`http://localhost/user/findAllEmployee/${companyId}`)
+        .then((res) => setEmployees(res.data));
+    } else {
+      const filteredEmployees = employees.filter((employee) =>
+        employee.name.toLowerCase().includes(searchTerm)
+      );
+      setEmployees(filteredEmployees);
+    }
   };
   useEffect(() => {
     console.log(companyId);
@@ -46,15 +113,11 @@ const Employee = () => {
       .then((res) => setEmployees(res.data))
       .catch((error) => {
         if (error.response) {
-          // Sunucudan gelen hata yanıtını işleme devam et
-          console.log("Sunucu Hata:", error.response.data);
+          console.log("Server Error:", error.response.data);
         } else if (error.request) {
-          // İstek yapılamadı hatasını işleme devam et
-          console.log("İstek Hatası:", error.request);
+          console.log("Request Error:", error.request);
         } else {
-          // Diğer hataları işleme devam et
-
-          console.log("Hata:", error.message);
+          console.log("Error:", error.message);
         }
       });
   }, [count]);
@@ -91,87 +154,67 @@ const Employee = () => {
         <div className="row filter-row">
           <div className="col-sm-6 col-md-3">
             <div className="form-group form-focus">
-              <input type="text" className="form-control floating" />
-              <label className="focus-label">Çalışan ID</label>
-            </div>
-          </div>
-          <div className="col-sm-6 col-md-3">
-            <div className="form-group form-focus">
-              <input type="text" className="form-control floating" />
+              <input
+                type="text"
+                className="form-control floating"
+                placeholder="Çalışan Adı"
+                onChange={handleSearch}
+              />
               <label className="focus-label">Çalışan Adı</label>
             </div>
-          </div>
-          <div className="col-sm-6 col-md-3">
-            <div className="form-group form-focus select-focus">
-              <select className="select floating">
-                <option value="">Select Designation</option>
-                <option value="">Web Developer</option>
-                <option value="">Web Designer</option>
-                <option value="">Android Developer</option>
-                <option value="">Ios Developer</option>
-              </select>
-              <label className="focus-label">Designation</label>
-            </div>
-          </div>
-          <div className="col-sm-6 col-md-3">
-            <Link to="#" className="btn btn-success btn-block">
-              {" "}
-              ARA{" "}
-            </Link>
           </div>
         </div>
         {/* Search Filter */}
 
         <div className="row staff-grid-row">
-          {/* Eğer çalışanlar dinamik verilerle gelirse bu kısmı bir döngü içinde oluşturabilirsiniz */}
-          <div className="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
-            {employees.map((employee) => {
-              return (
-                <div className="profile-widget" key={employee.id}>
-                  <div className="profile-img">
-                    <Link to="profile.html" className="avatar">
-                      <img src="src/assets/img/profiles/avatar-02.jpg" alt="" />
-                    </Link>
-                  </div>
-                  <div className="dropdown profile-action">
-                    <Link
-                      to="#"
-                      className="action-icon dropdown-toggle"
-                      data-toggle="dropdown"
-                      aria-expanded="false"
-                    >
-                      <i className="material-icons">more_vert</i>
-                    </Link>
-                    <div className="dropdown-menu dropdown-menu-right">
-                      <Link
-                        className="dropdown-item"
-                        to="#"
-                        data-toggle="modal"
-                        data-target="#edit_employee"
-                      >
-                        <i className="fa fa-pencil m-r-5"></i> Düzenle
-                      </Link>
-                      <Link
-                        className="dropdown-item"
-                        to="#"
-                        data-toggle="modal"
-                        data-target="#delete_employee"
-                      >
-                        <i className="fa fa-trash-o m-r-5"></i> Sil
-                      </Link>
-                    </div>
-                  </div>
-
-                  <h4 className="user-name m-t-10 mb-0 text-ellipsis">
-                    <Link to="#">{employee.name}</Link>
-                  </h4>
-                  <div className="small text-muted">{employee.department}</div>
-                </div>
-              );
-            })}
-          </div>
-          {/* Eğer çalışanlar dinamik verilerle gelirse bu kısmı bir döngü içinde oluşturabilirsiniz */}
+  {/* Çalışanlar burada yan yana sıralanacak */}
+  {employees.map((employee) => (
+    <div className="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3" key={employee.id}>
+      <div className="profile-widget">
+        <div className="profile-img">
+          <Link to="profile.html" className="avatar">
+            <img src="src/assets/img/profiles/avatar-02.jpg" alt="" />
+          </Link>
         </div>
+        <div className="dropdown profile-action">
+          <Link
+            to="#"
+            className="action-icon dropdown-toggle"
+            data-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <i className="material-icons">more_vert</i>
+          </Link>
+          <div className="dropdown-menu dropdown-menu-right">
+            <Link
+              className="dropdown-item"
+              to="#"
+              data-toggle="modal"
+              data-target="#edit_employee"
+            >
+              <i className="fa fa-pencil m-r-5"></i> Düzenle
+            </Link>
+            <Link
+              className="dropdown-item"
+              to="#"
+              data-toggle="modal"
+              data-target="#delete_employee"
+            >
+              <i className="fa fa-trash-o m-r-5"></i> Sil
+            </Link>
+          </div>
+        </div>
+
+        <h4 className="user-name m-t-10 mb-0 text-ellipsis">
+          <Link to="#">{employee.name}</Link>
+        </h4>
+        <div className="small text-muted">{employee.department}</div>
+      </div>
+    </div>
+  ))}
+  {/* Çalışanlar burada yan yana sıralanacak */}
+</div>
+
       </div>
       {/* Add Employee */}
       <div id="add_employee" className="modal custom-modal fade" role="dialog">
@@ -194,138 +237,229 @@ const Employee = () => {
                   <div className="col-sm-6">
                     <div className="form-group">
                       <label className="col-form-label">
-                        First Name <span className="text-danger">*</span>
+                        Adı <span className="text-danger">*</span>
                       </label>
                       <input
-                        className="form-control"
+                        className={`form-control ${
+                          formErrors.firstName ? "is-invalid" : ""
+                        }`}
                         type="text"
                         name="firstName"
                       />
+                      {formErrors.firstName && (
+                        <div className="invalid-feedback">
+                          {formErrors.firstName}
+                        </div>
+                      )}
                     </div>
                   </div>
                   <div className="col-sm-6">
                     <div className="form-group">
-                      <label className="col-form-label">Last Name</label>
+                      <label className="col-form-label">
+                        Soyadı <span className="text-danger">*</span>
+                      </label>
                       <input
-                        className="form-control"
+                        className={`form-control ${
+                          formErrors.lastName ? "is-invalid" : ""
+                        }`}
                         type="text"
                         name="lastName"
                       />
+                      {formErrors.lastName && (
+                        <div className="invalid-feedback">
+                          {formErrors.lastName}
+                        </div>
+                      )}
                     </div>
                   </div>
-
                   <div className="col-sm-6">
                     <div className="form-group">
                       <label className="col-form-label">
                         Email <span className="text-danger">*</span>
                       </label>
                       <input
-                        className="form-control"
+                        className={`form-control ${
+                          formErrors.email ? "is-invalid" : ""
+                        }`}
                         type="email"
                         name="email"
                       />
+                      {formErrors.email && (
+                        <div className="invalid-feedback">
+                          {formErrors.email}
+                        </div>
+                      )}
                     </div>
                   </div>
-
                   <div className="col-sm-6">
                     <div className="form-group">
                       <label className="col-form-label">
-                        Birth Place <span className="text-danger">*</span>
+                        Doğum Yeri <span className="text-danger">*</span>
                       </label>
                       <input
                         type="text"
-                        className="form-control"
+                        className={`form-control ${
+                          formErrors.birthPlace ? "is-invalid" : ""
+                        }`}
                         name="birthPlace"
                       />
+                      {formErrors.birthPlace && (
+                        <div className="invalid-feedback">
+                          {formErrors.birthPlace}
+                        </div>
+                      )}
                     </div>
                   </div>
                   <div className="col-sm-6">
                     <div className="form-group">
                       <label className="col-form-label">
-                        Birth Date <span className="text-danger">*</span>
+                        Doğum Tarihi <span className="text-danger">*</span>
                       </label>
                       <div className="cal-icon">
                         <input
-                          className="form-control datetimepicker"
+                          className={`form-control datetimepicker ${
+                            formErrors.birthDate ? "is-invalid" : ""
+                          }`}
                           type="text"
                           name="birthDate"
                         />
+                        {formErrors.birthDate && (
+                          <div className="invalid-feedback">
+                            {formErrors.birthDate}
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
-
                   <div className="col-sm-6">
                     <div className="form-group">
-                      <label className="col-form-label">Title </label>
+                      <label className="col-form-label">
+                        Ünvan <span className="text-danger">*</span>
+                      </label>
                       <input
-                        className="form-control"
+                        className={`form-control ${
+                          formErrors.title ? "is-invalid" : ""
+                        }`}
                         type="text"
                         name="title"
                       />
+                      {formErrors.title && (
+                        <div className="invalid-feedback">
+                          {formErrors.title}
+                        </div>
+                      )}
                     </div>
                   </div>
                   <div className="col-sm-6">
                     <div className="form-group">
-                      <label className="col-form-label">Location </label>
+                      <label className="col-form-label">
+                        Konum <span className="text-danger">*</span>
+                      </label>
                       <input
-                        className="form-control"
+                        className={`form-control ${
+                          formErrors.location ? "is-invalid" : ""
+                        }`}
                         type="text"
                         name="location"
                       />
+                      {formErrors.location && (
+                        <div className="invalid-feedback">
+                          {formErrors.location}
+                        </div>
+                      )}
                     </div>
                   </div>
                   <div className="col-sm-6">
                     <div className="form-group">
-                      <label className="col-form-label">Phone </label>
+                      <label className="col-form-label">
+                        Telefon <span className="text-danger">*</span>
+                      </label>
                       <input
-                        className="form-control"
+                        className={`form-control ${
+                          formErrors.phone ? "is-invalid" : ""
+                        }`}
                         type="text"
                         name="phone"
                       />
+                      {formErrors.phone && (
+                        <div className="invalid-feedback">
+                          {formErrors.phone}
+                        </div>
+                      )}
                     </div>
                   </div>
                   <div className="col-md-6">
                     <div className="form-group">
                       <label>
-                        Department <span className="text-danger">*</span>
+                        Departman <span className="text-danger">*</span>
                       </label>
-                      <select className="select" name="department">
-                        <option>Select Department</option>
-                        <option>Web Development</option>
-                        <option>IT Management</option>
-                        <option>Marketing</option>
+                      <select
+                        className={`select ${
+                          formErrors.department ? "is-invalid" : ""
+                        }`}
+                        name="department"
+                      >
+                        <option value="">Departman Seç</option>
+                        <option>Web Geliştirme</option>
+                        <option>IT Yönetimi</option>
+                        <option>Pazarlama</option>
                       </select>
+                      {formErrors.department && (
+                        <div className="invalid-feedback">
+                          {formErrors.department}
+                        </div>
+                      )}
                     </div>
                   </div>
-                </div>{" "}
-                <div className="col-sm-6">
-                  <div className="form-group">
-                    <label className="col-form-label">
-                      Membership Date <span className="text-danger">*</span>
-                    </label>
-                    <div className="cal-icon">
+
+                  <div className="col-sm-6">
+                    <div className="form-group">
+                      <label className="col-form-label">
+                        Üyelik Tarihi <span className="text-danger">*</span>
+                      </label>
+                      <div className="cal-icon">
+                        <input
+                          className={`form-control datetimepicker ${
+                            formErrors.membershipDate ? "is-invalid" : ""
+                          }`}
+                          type="text"
+                          name="membershipDate"
+                        />
+                        {formErrors.membershipDate && (
+                          <div className="invalid-feedback">
+                            {formErrors.membershipDate}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-sm-6">
+                    <div className="form-group">
+                      <label className="col-form-label">Maaş</label>
                       <input
-                        className="form-control datetimepicker"
+                        className={`form-control ${
+                          formErrors.salary ? "is-invalid" : ""
+                        }`}
                         type="text"
-                        name="membershipDate"
+                        name="salary"
                       />
+                      {formErrors.salary && (
+                        <div className="invalid-feedback">
+                          {formErrors.salary}
+                        </div>
+                      )}
                     </div>
-                  </div>
-                </div>
-                <div className="col-sm-6">
-                  <div className="form-group">
-                    <label className="col-form-label">Salary </label>
-                    <input className="form-control" type="text" name="salary" />
                   </div>
                 </div>
                 <div className="submit-section">
-                  <button className="btn btn-primary submit-btn">Submit</button>
+                  <button className="btn btn-primary submit-btn">Gönder</button>
                 </div>
               </form>
             </div>
           </div>
         </div>
       </div>
+
       {/*<!-- Edit Employee Modal -->*/}
       <div id="edit_employee" className="modal custom-modal fade" role="dialog">
         <div

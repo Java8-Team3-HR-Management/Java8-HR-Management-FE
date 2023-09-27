@@ -20,9 +20,9 @@ const App = () => {
       .get(`http://localhost/user/getEmployeeByAuthId/${decode.id}`)
       .then((res) => {
         var user = res.data;
-        localStorage.setItem("username", user.name + " " + user.surname);
-        localStorage.setItem("companyName", user.companyName);
-        localStorage.setItem("companyid", user.companyId);
+        Cookies.set("username", user.name + " " + user.surname);
+        var a =  Cookies.set("companyName", user.companyName);
+        Cookies.set("companyid", user.companyId);
       })
       .catch((error) => {
         console.error(error);
