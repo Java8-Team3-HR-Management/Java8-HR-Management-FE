@@ -69,7 +69,7 @@ const AddCompany = () => {
     const updatedCompany = { ...company, status: newStatus };
     axios
       .put(
-        `http://localhost:8080/api/v1/company/update-company`,
+        `http://localhost/company/update-company`,
         updatedCompany
       )
       .then((res) => {
