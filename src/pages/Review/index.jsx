@@ -24,7 +24,8 @@ const Review = () => {
   const [rating, setRating] = useState(0); // Yıldız derecesini tutmak için bir state
   const [selectedCompanyName, setSelectedCompanyName] = useState("Select");
   const [selectedCompanyId, setSelectedCompanyId] = useState(null);
-
+  const role = Cookies.get("decodeRole");
+  const companyId = Cookies.get("companyid");
   const onCompanyChange = (e) => {
     const selectedValue = e.target.value;
     const selectedCompany = companys.find(
@@ -33,9 +34,8 @@ const Review = () => {
 
     if (selectedCompany) {
       setSelectedCompanyName(selectedCompany.companyName);
-      console.log(selectedCompany.companyName);
-      setSelectedCompanyId(selectedCompany.id);
-      console.log(selectedCompany.id);
+      setSelectedCompanyId(selectedCompany.id); // Set the selectedCompanyId
+      setCount(count + 1);
     } else {
       setSelectedCompanyName("Şirket Seçiniz");
       setSelectedCompanyId(null);
@@ -45,7 +45,6 @@ const Review = () => {
     e.preventDefault();
 
     const accessToken = Cookies.get("accessToken");
-    console.log(accessToken);
     const authId = Cookies.get("decodeId");
     const nameSurname = localStorage.getItem("username");
     const comment = {
@@ -60,7 +59,6 @@ const Review = () => {
     axios
       .post(`http://localhost/comment/add-comment/${accessToken}`, comment)
       .then((res) => {
-        console.log(res.data);
         setCount(count + 1);
       })
       .catch((error) => {
@@ -69,12 +67,17 @@ const Review = () => {
   };
 
   useEffect(() => {
+    if (role === "EMPLOYEE") {
+      setSelectedCompanyId(companyId);
+    }
     axios.get("http://localhost/company/get-all-company").then((res) => {
       setComapnys(res.data);
     });
 
     axios
-      .get("http://localhost/comment/get-all-pending-comment")
+      .get(
+        `http://localhost/comment/get-all-approved-comment/${selectedCompanyId}`
+      )
       .then((res) => {
         setComments(res.data);
       });
@@ -85,7 +88,7 @@ const Review = () => {
       <div className="content container-fluid">
         <h1 className="mb-2">{selectedCompanyName}</h1>
         <div className="col-lg-9">
-          <select className="select" onChange={onCompanyChange}>
+          <select className="form-control" onChange={onCompanyChange}>
             <option>Select</option>
             {companys.map((company) => (
               <option key={company.id} value={company.id}>
@@ -99,37 +102,39 @@ const Review = () => {
           <div className="course-details-card mt--40">
             <div className="course-content">
               <h5 className="mb--20">Yorum</h5>
-              <div className="row row--30">
-                <div className="col-lg-4">
-                  <div className="rating-box">
-                    <div className="rating-number">5.0</div>
-                    <StarRating rating={5} onChange={setRating} />{" "}
-                    {/* Yıldızlı derecelendirme bileşeni */}
-                    <span>(25 Review)</span>{" "}
-                  </div>
-                </div>
-                <div className="col-lg-8">
-                  <div className="review-wrapper">
-                    <div className="single-progress-bar">
-                      <div className="rating-text">
-                        5 <i className="fa fa-star" aria-hidden="true"></i>{" "}
-                      </div>
-                      <div className="progress">
-                        <div
-                          className="progress-bar"
-                          role="progressbar"
-                          style={{ width: "100%" }}
-                          aria-valuenow="100"
-                          aria-valuemin="0"
-                          aria-valuemax="100"
-                        ></div>
-                      </div>
-                      <span className="rating-value">23</span>{" "}
+              {selectedCompanyId && (
+                <div className="row row--30">
+                  <div className="col-lg-4">
+                    <div className="rating-box">
+                      <div className="rating-number">5.0</div>
+                      <StarRating rating={5} onChange={setRating} />{" "}
+                      {/* Yıldızlı derecelendirme bileşeni */}
+                      <span>(25 Review)</span>{" "}
                     </div>
-                    {/* Diğer ilerleme çubukları için aynı modeli tekrarlayın */}
+                  </div>
+                  <div className="col-lg-8">
+                    <div className="review-wrapper">
+                      <div className="single-progress-bar">
+                        <div className="rating-text">
+                          5 <i className="fa fa-star" aria-hidden="true"></i>{" "}
+                        </div>
+                        <div className="progress">
+                          <div
+                            className="progress-bar"
+                            role="progressbar"
+                            style={{ width: "100%" }}
+                            aria-valuenow="100"
+                            aria-valuemin="0"
+                            aria-valuemax="100"
+                          ></div>
+                        </div>
+                        <span className="rating-value">23</span>{" "}
+                      </div>
+                      {/* Diğer ilerleme çubukları için aynı modeli tekrarlayın */}
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
               <div className="comment-wrapper pt--40">
                 <div className="section-title">
                   <h5 className="mb--25">Yorumlar</h5>
@@ -146,7 +151,7 @@ const Review = () => {
                       </div>
                       <div className="comment-content">
                         <div className="comment-top">
-                          <h6 className="title">{comment.commentSubject}</h6>
+                          <h6 className="title">{comment.employeeName}</h6>
                           <StarRating rating={comment.rate} />{" "}
                           {/* Yıldızlı derecelendirme bileşeni */}
                         </div>
@@ -158,11 +163,13 @@ const Review = () => {
                     </div>
                   ))
                 ) : (
-                  <hr></hr>
+                  <p>Lütfen bir şirket seçiniz.</p>
                 )}
                 {/* Diğer yorumlar için aynı modeli tekrarlayın */}
               </div>
-              {selectedCompanyId ? (
+              {selectedCompanyId &&
+              role === "EMPLOYEE" &&
+              selectedCompanyId === companyId ? (
                 <div className="row">
                   <div className="col-md-12">
                     <div className="card mb-0">
@@ -213,7 +220,7 @@ const Review = () => {
                   </div>
                 </div>
               ) : (
-                <p>Lütfen bir şirket seçiniz.</p>
+                <hr></hr>
               )}
             </div>
           </div>

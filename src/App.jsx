@@ -23,6 +23,7 @@ const App = () => {
         Cookies.set("username", user.name + " " + user.surname);
         var a =  Cookies.set("companyName", user.companyName);
         Cookies.set("companyid", user.companyId);
+        Cookies.set("authId", user.authId);
       })
       .catch((error) => {
         console.error(error);

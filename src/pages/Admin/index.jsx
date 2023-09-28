@@ -1,34 +1,14 @@
-import React from "react";
+import axios from "axios";
+import Cookies from "js-cookie";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 const Admin = () => {
-  const companyTopFive = [
-    {
-      companyId: "1",
-      companyName: "Global Technologies",
-      totalProfit: `${(Math.random() * 100000).toFixed(2)} ₺`,
-    },
-    {
-      companyId: "2",
-      companyName: "Delta Infotech",
-      totalProfit: `${(Math.random() * 100000).toFixed(2)} ₺`,
-    },
-    {
-      companyId: "3",
-      companyName: "Cream Inc",
-      totalProfit: `${(Math.random() * 100000).toFixed(2)} ₺`,
-    },
-    {
-      companyId: "4",
-      companyName: "Company C",
-      totalProfit: `${(Math.random() * 100000).toFixed(2)} ₺`,
-    },
-    {
-      companyId: "5",
-      companyName: "Company D",
-      totalProfit: `${(Math.random() * 100000).toFixed(2)} ₺`,
-    },
-  ];
+  const [count, setCount] = useState(0);
+  const [comments, setComments] = useState([]);
+  const authId = Cookies.get("authId");
+  const accessToken = Cookies.get("accessToken");
+ 
   const company = [
     {
       id: 1,
@@ -80,6 +60,47 @@ const Admin = () => {
       status: "Pasif",
     },
   ];
+
+  const handleStatusChange = (comment, newStatus) => {
+    const updatedComment = { ...comment, status: newStatus };
+    axios
+      .put(
+        `http://localhost/comment/update-comment/${accessToken}`, // Yorumun benzersiz kimliği (id) ile güncellendiğini varsayalım
+        updatedComment,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      )
+      .then((res) => {
+        setCount(count + 1);
+      })
+      .catch((error) => {
+        console.error("Yorum güncelleme hatası:", error);
+      });
+  };
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost/user/getEmployeeByAuthId/${authId}`)
+      .then((res) => {
+        console.log("Kullanıcı bilgileri:", res.data);
+      })
+      .catch((error) => {
+        console.error("Kullanıcı bilgileri alınamadı:", error);
+      });
+
+    axios
+      .get(`http://localhost/comment/get-all-pending-comment`)
+      .then((res) => {
+        setComments(res.data);
+        console.log("Onay bekleyen yorumlar:", res.data);
+      })
+      .catch((error) => {
+        console.error("Onay bekleyen yorumlar alınamadı:", error);
+      });
+  }, [count]);
   return (
     <div className="page-wrapper">
       <div className="content container-fluid">
@@ -153,26 +174,62 @@ const Admin = () => {
           <div className="col-md-6 d-flex">
             <div className="card card-table flex-fill">
               <div className="card-header">
-                <h3 className="card-title mb-0">En İyi 5 Şirket</h3>
+                <h3 className="card-title mb-0">Onay Bekleyen Yorumlar</h3>
               </div>
               <div className="card-body">
                 <div className="table-responsive">
                   <table className="table table-nowrap custom-table mb-0">
                     <thead>
                       <tr>
-                        <th>Şirket ID</th>
-                        <th>Şirket Adı</th>
-                        <th>Kâr</th>
+                        <th>Id</th>
+                        <th>Başlık</th>
+                        <th>İçerik</th>
+                        <th>Durum</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {companyTopFive.map((companyItem, index) => (
-                        <tr key={companyItem.companyId}>
-                          <td>{index + 1}</td>
+                      {comments.map((comment,index) => (
+                        <tr key={comment.id}>
+                          <td>{index+1}</td>
                           <td>
-                            <h2>{companyItem.companyName}</h2>
+                            <h2>{comment.commentSubject}</h2>
                           </td>
-                          <td>{companyItem.totalProfit}</td>
+                          <td>{comment.commentContent}</td>
+                          <td>
+                          <div className="dropdown">
+                            <button
+                              className={`btn btn-sm btn-rounded dropdown-toggle ${
+                                comment.status === "APPROVED"
+                                  ? "btn-success"
+                                  : "btn-danger"
+                              }`}
+                              data-toggle="dropdown"
+                              aria-expanded="false"
+                            >
+                              {comment.status === "APPROVED"
+                                ? "Aktif"
+                                : "Pasif"}
+                            </button>
+                            <div className="dropdown-menu">
+                              <button
+                                className="dropdown-item"
+                                onClick={() =>
+                                  handleStatusChange(comment, "APPROVED")
+                                }
+                              >
+                                Aktif
+                              </button>
+                              <button
+                                className="dropdown-item"
+                                onClick={() =>
+                                  handleStatusChange(comment, "PENDING")
+                                }
+                              >
+                                Pasif
+                              </button>
+                            </div>
+                          </div>
+                        </td>
                         </tr>
                       ))}
                     </tbody>
