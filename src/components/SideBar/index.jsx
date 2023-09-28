@@ -54,11 +54,11 @@ const SideBar = () => {
             ) : (
               <>
                {<li className="menu-title">Şirket</li>}
-                <li>
+                {role === "MANAGER" || role==="EMPLOYEE" ? (<li>
                   <Link to="/expense">
                     <i className="la la-money"></i> <span> Harcamalar</span>{" "}
                   </Link>
-                </li>
+                </li>): ("")}
                 <li>
                   <Link to="/profile">
                     <i className="la la-user"></i> <span>Profilim</span>

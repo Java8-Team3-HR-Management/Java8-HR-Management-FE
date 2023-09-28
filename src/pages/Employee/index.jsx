@@ -394,7 +394,7 @@ const Employee = () => {
                         Departman <span className="text-danger">*</span>
                       </label>
                       <select
-                        className={`select ${
+                        className={`form-control ${
                           formErrors.department ? "is-invalid" : ""
                         }`}
                         name="department"

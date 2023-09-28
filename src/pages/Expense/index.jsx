@@ -1,44 +1,84 @@
-import React, { useState } from "react";
+import axios from "axios";
+import Cookies from "js-cookie";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 const Expense = () => {
-  const tableData = [
-    {
-      id: 1,
-      invoiceNumber: "#INV-0001",
-      client: "Global Technologies",
-      createdDate: "11 Mar 2019",
-      dueDate: "17 Mar 2019",
-      amount: "$2099",
-      status: "Paid",
-    },
-    {
-      id: 2,
-      invoiceNumber: "#INV-0002",
-      client: "Delta Infotech",
-      createdDate: "11 Mar 2019",
-      dueDate: "17 Mar 2019",
-      amount: "$2099",
-      status: "Sent",
-    },
-    {
-      id: 3,
-      invoiceNumber: "#INV-0003",
-      client: "Cream Inc",
-      createdDate: "11 Mar 2019",
-      dueDate: "17 Mar 2019",
-      amount: "$2099",
-      status: "Partially Paid",
-    },
-  ];
+  const authId = Cookies.get("authId");
+  const [expense, setExpense] = useState([]);
+  const [count, setCount] = useState(0);
+  const companyId = Cookies.get("companyid");
+  const role = Cookies.get("decodeRole");
+  const accessToken = Cookies.get("accessToken");
+  const handleStatusChange = (expense, newStatus) => {
+    const updatedExpense = { ...expense, approvalStatus: newStatus };
+    axios
+      .put(
+        `http://localhost/expense/approval-expense/${accessToken}`,
+        updatedExpense,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      )
+      .then((res) => {
+        setCount(count + 1);
+        console.log(res.data);
+      })
+      .catch((error) => {
+        if (error.response) {
+          // Sunucudan gelen hata yanıtını işleme devam et
+          console.log("Sunucu Hata:", error.response.data.message);
+          alert(error.response.data);
+        } else if (error.request) {
+          // İstek yapılamadı hatasını işleme devam et
+          console.log("İstek Hatası:", error.request);
+          alert(error.request);
+        } else {
+          // Diğer hataları işleme devam et
+          console.log("Hata:", error.message);
+          alert(error.message);
+        }
+      });
+  };
+  const handleSearch = (e) => {
+    const searchTerm = e.target.value.toLowerCase();
 
-  // Status filtresi için bir state tanımlayın
-  const [statusFilter, setStatusFilter] = useState("All"); // Varsayılan olarak "All" seçili
-
-  // Tabloyu "Status" sütununa göre filtrelemek için bir işlev
-  const filteredTableData = statusFilter === "All"
-    ? tableData
-    : tableData.filter(item => item.status === statusFilter);
+    if (searchTerm === "") {
+      axios
+        .get(`http://localhost/expense/get-all-expense/${companyId.toString()}`)
+        .then((res) => setExpense(res.data));
+    } else {
+      const filteredExpens = expense.filter((expense) =>
+        expense.name.toLowerCase().includes(searchTerm)
+      );
+      setExpense(filteredExpens);
+    }
+  };
+  useEffect(() => {
+    console.log(role);
+    axios
+      .get(`http://localhost/expense/get-all-expense/${companyId.toString()}`)
+      .then((res) => {
+        setExpense(res.data);
+      })
+      .catch((error) => {
+        if (error.response) {
+          // Sunucudan gelen hata yanıtını işleme devam et
+          console.log("Sunucu Hata:", error.response.data);
+          alert(error.response.data);
+        } else if (error.request) {
+          // İstek yapılamadı hatasını işleme devam et
+          console.log("İstek Hatası:", error.request);
+          alert(error.request);
+        } else {
+          // Diğer hataları işleme devam et
+          console.log("Hata:", error.message);
+          alert(error.message);
+        }
+      });
+  }, [count]);
 
   return (
     <div className="page-wrapper">
@@ -54,119 +94,99 @@ const Expense = () => {
                 <li className="breadcrumb-item active">Harcamalar</li>
               </ul>
             </div>
-            <div className="col-auto float-right ml-auto">
-              <Link to="/create-expense" className="btn add-btn">
-                <i className="fa fa-plus"></i> Harcama Ekle
-              </Link>
-            </div>
+            {role !== "MANAGER" || role !== "EMPLOYEE" ? (
+              <div className="col-auto float-right ml-auto">
+                <Link to="/create-expense" className="btn add-btn">
+                  <i className="fa fa-plus"></i> Harcama Ekle
+                </Link>
+              </div>
+            ) : (
+             ""
+            )}
           </div>
         </div>
         <div className="row filter-row">
           <div className="col-sm-6 col-md-3">
             <div className="form-group form-focus">
-              <div className="cal-icon">
-                <input
-                  className="form-control floating datetimepicker"
-                  type="text"
-                />
-              </div>
-              <label className="focus-label">From</label>
+              <input
+                type="text"
+                className="form-control floating"
+                placeholder="Çalışan Adı"
+                onChange={handleSearch}
+              />
+              <label className="focus-label">Çalışan Adı</label>
             </div>
-          </div>
-          <div className="col-sm-6 col-md-3">
-            <div className="form-group form-focus">
-              <div className="cal-icon">
-                <input
-                  className="form-control floating datetimepicker"
-                  type="text"
-                />
-              </div>
-              <label className="focus-label">To</label>
-            </div>
-          </div>
-          <div className="col-sm-6 col-md-3">
-            <div className="form-group form-focus select-focus">
-              <select className="select floating">
-                <option>Select Status</option>
-                <option>Pending</option>
-                <option>Paid</option>
-                <option>Partially Paid</option>
-              </select>
-              <label className="focus-label">Status</label>
-            </div>
-          </div>
-          <div className="col-sm-6 col-md-3">
-            <Link to="#" className="btn btn-success btn-block">
-              {" "}
-              Ara{" "}
-            </Link>
           </div>
         </div>
 
         <div className="row">
           <div className="col-md-12">
             <div className="table-responsive">
-            <table className="table table-striped custom-table mb-0">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Invoice Number</th>
-                <th>Client</th>
-                <th>Created Date</th>
-                <th>Due Date</th>
-                <th>Amount</th>
-                <th>Status</th>
-                <th className="text-right">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredTableData.map((item) => (
-                <tr key={item.id}>
-                  <td>{item.id}</td>
-                  <td>
-                    <Link to={`/expense-detail`}>
-                      {item.invoiceNumber}
-                    </Link>
-                  </td>
-                  <td>{item.client}</td>
-                  <td>{item.createdDate}</td>
-                  <td>{item.dueDate}</td>
-                  <td>{item.amount}</td>
-                  <td>
-                    <span className={`badge ${getStatusBadgeClass(item.status)}`}>
-                      {item.status}
-                    </span>
-                  </td>
-                  <td className="text-right">
-                    <div className="dropdown dropdown-action">
-                      <Link
-                        to="#"
-                        className="action-icon dropdown-toggle"
-                        data-toggle="dropdown"
-                        aria-expanded="false"
-                      >
-                        <i className="material-icons">more_vert</i>
-                      </Link>
-                      <div className="dropdown-menu dropdown-menu-right">
-                        <Link className="dropdown-item" to="edit-invoice.html">
-                          <i className="fa fa-pencil m-r-5"></i> Edit
-                        </Link>
-                        <Link className="dropdown-item" to="invoice-view.html">
-                          <i className="fa fa-eye m-r-5"></i> View
-                        </Link>
-                        <Link className="dropdown-item" to="#">
-                          <i className="fa fa-file-pdf-o m-r-5"></i> Download
-                        </Link>
-                        <Link className="dropdown-item" to="#">
-                          <i className="fa fa-trash-o m-r-5"></i> Delete
-                        </Link>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+              <table className="table table-striped custom-table mb-0">
+                <thead>
+                  <tr>
+                    <th>Harcama No</th>
+                    <th>Ad Soyad</th>
+                    <th>Departman</th>
+                    <th>Tür</th>
+                    <th>Tutar</th>
+                    <th>Durum</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {expense.map((item) => (
+                    <tr key={item.id}>
+                      <td>{item.id}</td>
+                      <td>
+                        {item.name} {item.surName}
+                      </td>
+                      <td>{item.department}</td>
+                      <td>{item.expenditureType}</td>
+                      <td>{item.amountOfExpenditure}</td>
+                      <td>
+                        <div
+                          className={`dropdown ${
+                            role !== "MANAGER" ? "readonly" : ""
+                          }`}
+                        >
+                          <button
+                            className={`btn btn-sm btn-rounded dropdown-toggle ${
+                              item.approvalStatus === "APPROVED"
+                                ? "btn-success"
+                                : "btn-danger"
+                            }`}
+                            data-toggle="dropdown"
+                            aria-expanded="false"
+                            disabled={role !== "MANAGER"} // role "MANAGER" değilse elementi devre dışı bırak
+                          >
+                            {item.approvalStatus === "APPROVED"
+                              ? "Aktif"
+                              : "Pasif"}
+                          </button>
+                          <div className="dropdown-menu">
+                            <button
+                              className="dropdown-item"
+                              onClick={() =>
+                                handleStatusChange(item, "APPROVED")
+                              }
+                            >
+                              Aktif
+                            </button>
+                            <button
+                              className="dropdown-item"
+                              onClick={() =>
+                                handleStatusChange(item, "PENDING")
+                              }
+                            >
+                              Pasif
+                            </button>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
@@ -178,14 +198,14 @@ const Expense = () => {
 export default Expense;
 
 function getStatusBadgeClass(status) {
-    switch (status) {
-      case "Paid":
-        return "bg-inverse-success";
-      case "Sent":
-        return "bg-inverse-info";
-      case "Partially Paid":
-        return "bg-inverse-warning";
-      default:
-        return "";
-    }
+  switch (status) {
+    case "Paid":
+      return "bg-inverse-success";
+    case "Sent":
+      return "bg-inverse-info";
+    case "Partially Paid":
+      return "bg-inverse-warning";
+    default:
+      return "";
   }
+}

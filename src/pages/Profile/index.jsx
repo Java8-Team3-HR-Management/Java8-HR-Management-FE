@@ -14,7 +14,89 @@ import axios from "axios";
 const Profile = () => {
   const role = Cookies.get("decodeRole");
   const id = Cookies.get("decodeId");
+  const accessToken = Cookies.get("accessToken");
   const [profile, setProfile] = useState([]);
+  const [debtAmount, setDebtAmount] = useState(0);
+  const [vocationType, setVocationType] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+
+  const onSubmitAddDebt = (e) => {
+    e.preventDefault();
+    const a = e.target.requestedAmount.value;
+    const debt = {
+      requestedAmount: parseFloat(a),
+      userId: profile.id,
+    };
+    axios
+      .post(
+        `http://localhost/debt/debt-request/${accessToken}`,
+        debt
+      )
+      .then((res) => {
+        alert("Talebiniz Başarı ile alınmıştır.");
+      })
+      .catch((error) => {
+        if (error.response) {
+          // Sunucudan gelen hata yanıtını işleme devam et
+          console.log("Sunucu Hata:", error.response.data.message);
+          alert(error.response.data.message);
+        } else if (error.request) {
+          // İstek yapılamadı hatasını işleme devam et
+          console.log("İstek Hatası:", error.request);
+          alert( error.request);
+        } else {
+          // Diğer hataları işleme devam et
+          console.log("Hata:", error.message);
+          alert( error.message);
+        }
+      });
+  };
+
+  const onSubmitAddVacation = (e) => {
+    e.preventDefault();
+    const startDateParts = e.target.startOfVocationDate.value.split("/");
+    const endDateParts = e.target.endOfVocationDate.value.split("/");
+    const startDate = new Date(
+      startDateParts[2],
+      startDateParts[1] - 1,
+      startDateParts[0]
+    );
+    const endDate = new Date(
+      endDateParts[2],
+      endDateParts[1] - 1,
+      endDateParts[0]
+    );
+    const vacation = {
+      userId: profile.id,
+      vocationType: e.target.vocationType.value,
+      startOfVocationDate: startDate,
+      endOfVocationDate: endDate,
+    };
+    axios
+      .post(
+        `http://localhost/vacation/create-vacation/${accessToken}`,
+        vacation
+      )
+      .then((res) => {
+        alert("Talebiniz Başarı ile alınmıştır.");
+      })
+      .catch((error) => {
+        if (error.response) {
+          // Sunucudan gelen hata yanıtını işleme devam et
+          console.log("Sunucu Hata:", error.response.data.message);
+          alert(error.response.data.message);
+        } else if (error.request) {
+          // İstek yapılamadı hatasını işleme devam et
+          console.log("İstek Hatası:", error.request);
+          alert( error.request);
+        } else {
+          // Diğer hataları işleme devam et
+          console.log("Hata:", error.message);
+          alert( error.message);
+        }
+      });
+  };
 
   useEffect(() => {
     axios
@@ -25,17 +107,20 @@ const Profile = () => {
       .catch((error) => {
         if (error.response) {
           // Sunucudan gelen hata yanıtını işleme devam et
-          console.log("Sunucu Hata:", error.response.data);
+          console.log("Sunucu Hata:", error.response.data.message);
+          alert(error.response.data.message);
         } else if (error.request) {
           // İstek yapılamadı hatasını işleme devam et
           console.log("İstek Hatası:", error.request);
+          alert( error.request);
         } else {
           // Diğer hataları işleme devam et
-
           console.log("Hata:", error.message);
+          alert( error.message);
         }
       });
   }, []);
+
   return (
     <>
       <div className="page-wrapper">
@@ -107,20 +192,18 @@ const Profile = () => {
                   </button>
                 </div>
                 <div className="modal-body">
-                  <form>
+                  <form onSubmit={onSubmitAddDebt}>
                     <div className="form-group">
                       <label>
                         Miktar <span className="text-danger">*</span>
                       </label>
-                      <input className="form-control" type="number" />
+                      <input
+                        className="form-control"
+                        type="number"
+                        name="requestedAmount"
+                        required
+                      />
                     </div>
-                    <div className="form-group">
-                      <label>
-                        Açıklama <span className="text-danger">*</span>
-                      </label>
-                      <textarea className="form-control" rows="4"></textarea>
-                    </div>
-
                     <div className="submit-section">
                       <button className="btn btn-primary submit-btn">
                         Talep Et
@@ -150,7 +233,7 @@ const Profile = () => {
                   </button>
                 </div>
                 <div className="modal-body">
-                  <form>
+                  <form onSubmit={onSubmitAddVacation}>
                     <div className="form-group">
                       <label className="col-form-label">
                         Başlangıç Tarihi <span className="text-danger">*</span>
@@ -159,6 +242,9 @@ const Profile = () => {
                         <input
                           className="form-control datetimepicker"
                           type="text"
+                          name="startOfVocationDate"
+                          placeholder="GG/AA/YYYY"
+                          required
                         />
                       </div>
                     </div>
@@ -170,6 +256,9 @@ const Profile = () => {
                         <input
                           className="form-control datetimepicker"
                           type="text"
+                          name="endOfVocationDate"
+                          placeholder="GG/AA/YYYY"
+                          required                          
                         />
                       </div>
                     </div>
@@ -177,7 +266,7 @@ const Profile = () => {
                       <label>
                         Açıklama <span className="text-danger">*</span>
                       </label>
-                      <textarea className="form-control" rows="4"></textarea>
+                      <textarea className="form-control" rows="4" name="vocationType" required></textarea>
                     </div>
 
                     <div className="submit-section">

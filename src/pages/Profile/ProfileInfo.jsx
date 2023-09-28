@@ -175,7 +175,7 @@ const ProfileInfo = ({ profile }) => {
                     <label>
                       Departman <span className="text-danger">*</span>
                     </label>
-                    <select className="select" value={profile.department}>
+                    <select className="form-control" value={profile.department}>
                       <option value="Departman Seç">Departman Seç</option>
                       <option value="Web Development">Web Development</option>
                       <option value="IT Management">IT Management</option>
@@ -188,7 +188,7 @@ const ProfileInfo = ({ profile }) => {
                     <label>
                       Raporlar <span className="text-danger">*</span>
                     </label>
-                    <select className="select">
+                    <select className="form-control">
                       <option>-</option>
                       <option value="">Wilmer Deluna</option>
                       <option value="">Lesley Grauer</option>

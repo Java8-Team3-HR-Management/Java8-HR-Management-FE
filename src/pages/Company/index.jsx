@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Bar, Line } from "react-chartjs-2";
 import { Link } from "react-router-dom";
 import Chart from "chart.js/auto";
+import axios from "axios";
+import Cookies from "js-cookie";
 
 const Company = () => {
   const [earnings, setEarnings] = useState(0);
@@ -13,33 +15,11 @@ const Company = () => {
   const [earningsPercentage, setEarningsPercentage] = useState(0);
   const [profitPercentage, setProfitPercentage] = useState(0);
   const [expensesPercentage, setExpensesPercentage] = useState(0);
+  const accessToken = Cookies.get("accessToken");
 
-  const invoices = [
-    {
-      invoiceNumber: "#INV-0001",
-      company: "Global Technologies",
-      date: "11 Mar 2019",
-      amount: "$380",
-      status: "Partially Paid",
-      badgeClassName: "badge bg-inverse-warning",
-    },
-    {
-      invoiceNumber: "#INV-0002",
-      company: "Delta Infotech",
-      date: "8 Feb 2019",
-      amount: "$500",
-      status: "Paid",
-      badgeClassName: "badge bg-inverse-success",
-    },
-    {
-      invoiceNumber: "#INV-0003",
-      company: "Cream Inc",
-      date: "23 Jan 2019",
-      amount: "$60",
-      status: "Unpaid",
-      badgeClassName: "badge bg-inverse-danger",
-    },
-  ];
+  const [count, setCount] = useState(0);
+  const [vacations, setVacations] = useState([]);
+  const [debts, setDebts] = useState([]);
 
   const payments = [
     {
@@ -135,6 +115,69 @@ const Company = () => {
       },
     },
   };
+  const handleStatusChangeDebt = (debt, newStatus) => {
+    const updatedVacation = { ...debt, eStatus: newStatus };
+    const update = {
+      userId: updatedVacation.userId,
+      vocationStatus: updatedVacation.vocationStatus,
+    };
+    console.log(update);
+    // axios
+    //   .put(`http://localhost/vacation/update-vacation/${accessToken}`, update, {
+    //     headers: {
+    //       Authorization: `Bearer ${accessToken}`,
+    //     },
+    //   })
+    //   .then((res) => {
+    //     setCount(count + 1);
+    //     console.log(res.data);
+    //   })
+    //   .catch((error) => {
+    //     console.error("İzin dururm güncelleme hatası:", error);
+    //   });
+  };
+  const handleStatusChange = (vacation, newStatus) => {
+    const updatedVacation = { ...vacation, vocationStatus: newStatus };
+    const update = {
+      userId: updatedVacation.userId,
+      vocationStatus: updatedVacation.vocationStatus,
+    };
+    console.log(update);
+    axios
+      .put(`http://localhost/vacation/update-vacation/${accessToken}`, update, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      })
+      .then((res) => {
+        setCount(count + 1);
+        console.log(res.data);
+      })
+      .catch((error) => {
+        console.error("İzin dururm güncelleme hatası:", error);
+      });
+  };
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost/vacation/find-all-vacation-pending`)
+      .then((res) => {
+        setVacations(res.data);
+      })
+      .catch((error) => {
+        console.error("Onay bekleyen izinler alınamadı:", error);
+      });
+    axios
+      .get(`http://localhost/debt/alldebts`)
+      .then((res) => {
+        setDebts(res.data);
+        console.log(res.data);
+      })
+      .catch((error) => {
+        console.error("Onay bekleyen avanslar alınamadı:", error);
+      });
+  }, [count]);
+
   useEffect(() => {
     const randomEarnings = (Math.random() * 100000).toFixed(3);
     const previousMonthEarningsValue = (Math.random() * 100000).toFixed(3);
@@ -397,38 +440,73 @@ const Company = () => {
           <div className="col-md-6 d-flex">
             <div className="card card-table flex-fill">
               <div className="card-header">
-                <h3 className="card-title mb-0">Faturalar</h3>
+                <h3 className="card-title mb-0">Onay Bekleyen İzinler</h3>
               </div>
               <div className="card-body">
                 <div className="table-responsive">
                   <table className="table table-nowrap custom-table mb-0">
                     <thead>
                       <tr>
-                        <th>Fatura ID</th>
-                        <th>Müşteri</th>
+                        <th> Id</th>
+                        <th>Başlangıç Tarihi</th>
                         <th>Bitiş Tarihi</th>
-                        <th>Toplam</th>
+                        <th>Sebep</th>
                         <th>Durum</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {invoices.map((invoice, index) => (
-                        <tr key={index}>
-                          <td>{invoice.invoiceNumber}</td>
+                      {vacations ? (
+                        vacations.map((vacation) => (
+                          <tr key={vacation.id}>
+                            <td>{vacation.id}</td>
+                            <td>{vacation.startOfVocationDate}</td>
+                            <td>{vacation.endOfVocationDate}</td>
+                            <td>{vacation.vocationType}</td>
+                            <td>
+                              <div className="dropdown">
+                                <button
+                                  className={`btn btn-sm btn-rounded dropdown-toggle ${
+                                    vacation.vocationStatus === "APPROVED"
+                                      ? "btn-success"
+                                      : "btn-danger"
+                                  }`}
+                                  data-toggle="dropdown"
+                                  aria-expanded="false"
+                                >
+                                  {vacation.vocationStatus === "APPROVED"
+                                    ? "Aktif"
+                                    : "Pasif"}
+                                </button>
+                                <div className="dropdown-menu">
+                                  <button
+                                    className="dropdown-item"
+                                    onClick={() =>
+                                      handleStatusChange(vacation, "ACCEPT")
+                                    }
+                                  >
+                                    Aktif
+                                  </button>
+                                  <button
+                                    className="dropdown-item"
+                                    onClick={() =>
+                                      handleStatusChange(vacation, "PENDING")
+                                    }
+                                  >
+                                    Pasif
+                                  </button>
+                                </div>
+                              </div>
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
                           <td>
-                            <h2>
-                              <Link to="#">{invoice.company}</Link>
-                            </h2>
-                          </td>
-                          <td>{invoice.date}</td>
-                          <td>{invoice.amount}</td>
-                          <td>
-                            <span className={invoice.badgeClassName}>
-                              {invoice.status}
-                            </span>
+                            {" "}
+                            Şu anlık onay bekleyen herhangi bir izin bulunamadı
                           </td>
                         </tr>
-                      ))}
+                      )}
                     </tbody>
                   </table>
                 </div>
@@ -448,27 +526,64 @@ const Company = () => {
                   <table className="table custom-table table-nowrap mb-0">
                     <thead>
                       <tr>
-                        <th>Fatura ID</th>
-                        <th>Müşteri</th>
-                        <th>Ödeme Türü</th>
-                        <th>Ödeme</th>
-                        <th>Paid Amount</th>
+                        <th>Id</th>
+                        <th>Son Avans Tarihi</th>
+                        <th>Avans Miktarı</th>
+                        <th>Durum</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {payments.map((payment, index) => (
-                        <tr key={index}>
-                          <td>{payment.invoiceID}</td>
+                      {vacations ? (
+                        debts.map((debt) => (
+                          <tr key={debt.id}>
+                            <td>{debt.userId}</td>
+                            <td>{debt.lastAdvanceDate}</td>
+                            <td>{debt.salary}</td>
+                            <td>
+                              <div className="dropdown">
+                                <button
+                                  className={`btn btn-sm btn-rounded dropdown-toggle ${
+                                    debt.eStatus === "APPROVED"
+                                      ? "btn-success"
+                                      : "btn-danger"
+                                  }`}
+                                  data-toggle="dropdown"
+                                  aria-expanded="false"
+                                >
+                                  {debt.eStatus === "APPROVED"
+                                    ? "Aktif"
+                                    : "Pasif"}
+                                </button>
+                                <div className="dropdown-menu">
+                                  <button
+                                    className="dropdown-item"
+                                    onClick={() =>
+                                      handleStatusChangeDebt(debt, "ACCEPT")
+                                    }
+                                  >
+                                    Aktif
+                                  </button>
+                                  <button
+                                    className="dropdown-item"
+                                    onClick={() =>
+                                      handleStatusChangeDebt(debt, "PENDING")
+                                    }
+                                  >
+                                    Pasif
+                                  </button>
+                                </div>
+                              </div>
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
                           <td>
-                            <h2>
-                              <Link to="#">{payment.client}</Link>
-                            </h2>
+                            {" "}
+                            Şu anlık onay bekleyen herhangi bir izin bulunamadı
                           </td>
-                          <td>{payment.paymentType}</td>
-                          <td>{payment.paidDate}</td>
-                          <td>{payment.paidAmount}</td>
                         </tr>
-                      ))}
+                      )}
                     </tbody>
                   </table>
                 </div>
