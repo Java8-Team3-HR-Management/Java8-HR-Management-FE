@@ -22,6 +22,7 @@ const Review = () => {
   const [companys, setComapnys] = useState([]);
   const [count, setCount] = useState(0);
   const [rating, setRating] = useState(0); // Yıldız derecesini tutmak için bir state
+  const [avgRate, setAvgRate] = useState(0);
   const [selectedCompanyName, setSelectedCompanyName] = useState("Select");
   const [selectedCompanyId, setSelectedCompanyId] = useState(null);
   const role = Cookies.get("decodeRole");
@@ -81,6 +82,14 @@ const Review = () => {
       .then((res) => {
         setComments(res.data);
       });
+    axios
+      .get(
+        `http://localhost/company/get-company-avg-rate/${selectedCompanyId}`
+      )
+      .then((res) => {
+        setAvgRate(res.data);
+        console.log("AVG",res.data);
+      });
   }, [count]);
 
   return (
@@ -106,10 +115,10 @@ const Review = () => {
                 <div className="row row--30">
                   <div className="col-lg-4">
                     <div className="rating-box">
-                      <div className="rating-number">5.0</div>
-                      <StarRating rating={5} onChange={setRating} />{" "}
+                      <div className="rating-number">{avgRate.avgRate}</div>
+                      <StarRating rating={avgRate.avgRate} onChange={setRating} />{" "}
                       {/* Yıldızlı derecelendirme bileşeni */}
-                      <span>(25 Review)</span>{" "}
+                      <span>(`{avgRate.size} Yorum`)</span>{" "}
                     </div>
                   </div>
                   <div className="col-lg-8">
