@@ -1,5 +1,5 @@
 <div align="center" id="top"> 
-  <img src="/src/Diagram/Project-Diagram.png" alt="Hr Ms Fe" />
+ ![](Diagram/Project-Diagram.png)
 
   &#xa0;
 
