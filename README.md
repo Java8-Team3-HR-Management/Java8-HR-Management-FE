@@ -20,12 +20,10 @@
 
 <p align="center">
   <a href="#dart-about">About</a> &#xa0; | &#xa0; 
-  <a href="#sparkles-features">Features</a> &#xa0; | &#xa0;
+  <a href="#sparkles-pages-and-features">Features</a> &#xa0; | &#xa0;
   <a href="#rocket-technologies">Technologies</a> &#xa0; | &#xa0;
   <a href="#white_check_mark-requirements">Requirements</a> &#xa0; | &#xa0;
-  <a href="#checkered_flag-starting">Starting</a> &#xa0; | &#xa0;
-  <a href="#memo-license">License</a> &#xa0; | &#xa0;
-  <a href="https://github.com/{{YOUR_GITHUB_USERNAME}}" target="_blank">Author</a>
+  <a href="#checkered_flag-getting-starting">Starting</a> &#xa0; | &#xa0;
 </p>
 
 <br>
@@ -34,7 +32,7 @@
 
 This HR Management React Project is designed to streamline and simplify human resource management tasks for businesses and organizations. It provides a comprehensive set of features and functionalities to effectively manage employees, expenses, and company-related information.
 
-## Pages and Features
+## :sparkles: Pages and Features
 
 - **Add Company**: This page allows you to add a new company to the system.
 
@@ -99,7 +97,7 @@ The following tools were used in this project:
 
 Before starting :checkered_flag:, you need to have [Git](https://git-scm.com) installed.
 
-## Getting Started
+## :checkered_flag: Getting Started
 
 To get started with the project, follow these steps:
 
@@ -109,9 +107,6 @@ To get started with the project, follow these steps:
 4. Start the project: `npm run dev`
 
 
-// ## :memo: License ##
-
-// This project is under license from MIT. For more details, see the [LICENSE](LICENSE.md) file.
 
 
  Made with :heart: by <a href="https://github.com/ysnslk" target="_blank">Yasin Solak</a> <a href="https://github.com/nurgulkurtul" target="_blank">Nurgül Kurtul</a> <a href="https://github.com/uguryagmur96" target="_blank">Uğur Gürkan Yağmur</a> <a href="https://github.com/adlermarvelously" target="_blank">Merve Nur Adler</a>
