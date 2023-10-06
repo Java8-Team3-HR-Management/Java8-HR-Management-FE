@@ -8,21 +8,7 @@
 
 <h1 align="center">HR Management</h1>
 
-<p align="center">
-  <img alt="Github top language" src="https://img.shields.io/github/languages/top/ysnslk/hr-ms-fe?color=56BEB8">
 
-  <img alt="Github language count" src="https://img.shields.io/github/languages/count/ysnslk/hr-ms-fe?color=56BEB8">
-
-  <img alt="Repository size" src="https://img.shields.io/github/repo-size/ysnslk/hr-ms-fe?color=56BEB8">
-
-  <img alt="License" src="https://img.shields.io/github/license/ysnslk/hr-ms-fe?color=56BEB8">
-
-  <!-- <img alt="Github issues" src="https://img.shields.io/github/issues/{{YOUR_GITHUB_USERNAME}}/hr-ms-fe?color=56BEB8" /> -->
-
-  <!-- <img alt="Github forks" src="https://img.shields.io/github/forks/{{YOUR_GITHUB_USERNAME}}/hr-ms-fe?color=56BEB8" /> -->
-
-  <!-- <img alt="Github stars" src="https://img.shields.io/github/stars/{{YOUR_GITHUB_USERNAME}}/hr-ms-fe?color=56BEB8" /> -->
-</p>
 
 <!-- Status -->
 
@@ -48,12 +34,61 @@
 
 Describe your project
 
-## :sparkles: Features ##
+## Pages and Features
 
-:heavy_check_mark: Feature 1;\
-:heavy_check_mark: Feature 2;\
-:heavy_check_mark: Feature 3;
+- **Add Company**: This page allows you to add a new company to the system.
 
+- **Admin**: Access the admin panel to manage system settings.
+
+- **Admin Login**: Log in as an admin to access administrative features.
+
+- **Admin Register**: Register new admin accounts.
+
+- **Calendar**: View and manage events and schedules using a calendar view.
+
+- **Company**: View company details and manage company-related information.
+
+- **Create Expense**: Create and manage expenses within the system.
+
+- **Employee**: View employee details and manage employee information.
+
+- **Expense**: List and manage expenses recorded in the system.
+
+- **Expense Detail**: View detailed information about a specific expense.
+
+- **Forgot Password**: Reset your password if you've forgotten it.
+
+- **Login**: Log in as a user or employee.
+
+- **Profile**: Manage your user profile and settings.
+
+- **Register**: Register new user accounts.
+
+- **Review**: View and manage reviews and feedback.
+
+- **Subscription**: Manage subscription and membership details.
+
+## Usage
+
+To use the different pages and features of the project:
+
+- Use the **Add Company** page to add new companies.
+- Access the admin panel using the **Admin** page.
+- Log in as an admin on the **Admin Login** page.
+- Register new admin accounts using the **Admin Register** page.
+- Manage events and schedules with the **Calendar** page.
+- View and manage company details with the **Company** page.
+- Create and manage expenses on the **Create Expense** page.
+- Access and manage employee details on the **Employee** page.
+- List and manage expenses on the **Expense** page.
+- View detailed information about expenses on the **Expense Detail** page.
+- Reset your password if needed using the **Forgot Password** page.
+- Log in as a user or employee on the **Login** page.
+- Manage your user profile and settings on the **Profile** page.
+- Register new user accounts using the **Register** page.
+- View and manage reviews and feedback on the **Review** page.
+- Manage subscription and membership details on the **Subscription** page.
+  
 ## :rocket: Technologies ##
 
 The following tools were used in this project:
@@ -62,32 +97,24 @@ The following tools were used in this project:
 
 ## :white_check_mark: Requirements ##
 
-Before starting :checkered_flag:, you need to have [Git](https://git-scm.com) and [Node](https://nodejs.org/en/) installed.
+Before starting :checkered_flag:, you need to have [Git](https://git-scm.com) installed.
 
-## :checkered_flag: Starting ##
+## Getting Started
 
-```bash
-# Clone this project
-$ git clone https://github.com/{{YOUR_GITHUB_USERNAME}}/hr-ms-fe
+To get started with the project, follow these steps:
 
-# Access
-$ cd hr-ms-fe
-
-# Install dependencies
-$ yarn
-
-# Run the project
-$ yarn start
-
-# The server will initialize in the <http://localhost:3000>
-```
-
-## :memo: License ##
-
-This project is under license from MIT. For more details, see the [LICENSE](LICENSE.md) file.
+1. Clone this repository: `git clone https://github.com/your/repo.git`
+2. Navigate to the project directory: `cd hr-management-react-project`
+3. Install the required dependencies: `npm install`
+4. Start the project: `npm run dev`
 
 
-Made with :heart: by <a href="https://github.com/ysnslk" target="_blank">Yasin Solak</a>
+// ## :memo: License ##
+
+// This project is under license from MIT. For more details, see the [LICENSE](LICENSE.md) file.
+
+
+// Made with :heart: by <a href="https://github.com/ysnslk" target="_blank">Yasin Solak</a>
 
 &#xa0;
 
