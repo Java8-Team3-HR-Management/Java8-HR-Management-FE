@@ -33,7 +33,7 @@
 
 This HR Management React Project is designed to streamline and simplify human resource management tasks for businesses and organizations. It provides a comprehensive set of features and functionalities to effectively manage employees, expenses, and company-related information.
 
-## :sparkles: Pages and Features
+## :sparkles: Pages and Features ##
 
 - **Add Company**: This page allows you to add a new company to the system.
 
@@ -67,7 +67,7 @@ This HR Management React Project is designed to streamline and simplify human re
 
 - **Subscription**: Manage subscription and membership details.
 
-## :globe_with_meridians: Usage
+## :globe_with_meridians: Usage ##
 
 To use the different pages and features of the project:
 
