@@ -1,5 +1,5 @@
 <div align="center" id="top"> 
- ![](Diagram/Project-Diagram.png)
+ ![Proje Diyagramı](https://github.com/Java8-Team3-HR-Management/Java8-HR-Management-FE/blob/master/src/assets/Diagram/Project-Diagram.png)
 
   &#xa0;
 
