@@ -32,7 +32,7 @@
 
 ## :dart: About ##
 
-Describe your project
+This HR Management React Project is designed to streamline and simplify human resource management tasks for businesses and organizations. It provides a comprehensive set of features and functionalities to effectively manage employees, expenses, and company-related information.
 
 ## Pages and Features
 
