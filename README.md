@@ -109,7 +109,7 @@ To get started with the project, follow these steps:
 
 
 
- Made with :heart: by <a href="https://github.com/ysnslk" target="_blank">Yasin Solak</a> <a href="https://github.com/nurgulkurtul" target="_blank">Nurgül Kurtul</a> <a href="https://github.com/uguryagmur96" target="_blank">Uğur Gürkan Yağmur</a> <a href="https://github.com/adlermarvelously" target="_blank">Merve Nur Adler</a>
+ Made with :heart: by <a href="https://github.com/ysnslk" target="_blank">Yasin Solak</a>  |  <a href="https://github.com/nurgulkurtul" target="_blank">Nurgül Kurtul</a>  |  <a href="https://github.com/uguryagmur96" target="_blank">Uğur Gürkan Yağmur</a>  |  <a href="https://github.com/adlermarvelously" target="_blank">Merve Nur Adler</a>
 
 &#xa0;
 
