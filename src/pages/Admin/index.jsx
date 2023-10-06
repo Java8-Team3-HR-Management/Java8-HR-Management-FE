@@ -65,7 +65,7 @@ const Admin = () => {
     const updatedComment = { ...comment, status: newStatus };
     axios
       .put(
-        `http://localhost/comment/update-comment/${accessToken}`, // Yorumun benzersiz kimliği (id) ile güncellendiğini varsayalım
+        `http://34.163.83.48/comment/update-comment/${accessToken}`, // Yorumun benzersiz kimliği (id) ile güncellendiğini varsayalım
         updatedComment,
         {
           headers: {
@@ -83,7 +83,7 @@ const Admin = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost/user/getEmployeeByAuthId/${authId}`)
+      .get(`http://34.163.83.48/user/getEmployeeByAuthId/${authId}`)
       .then((res) => {
         console.log("Kullanıcı bilgileri:", res.data);
       })
@@ -92,7 +92,7 @@ const Admin = () => {
       });
 
     axios
-      .get(`http://localhost/comment/get-all-pending-comment`)
+      .get(`http://34.163.83.48/comment/get-all-pending-comment`)
       .then((res) => {
         setComments(res.data);
         console.log("Onay bekleyen yorumlar:", res.data);

@@ -36,7 +36,7 @@ const AdminLogin = () => {
     };
 
     axios
-      .post("http://localhost/auth/login", login)
+      .post("http://34.163.83.48/auth/login", login)
       .then((res) => {
         if (res.data.role === "ADMIN") {
           const token = res.data.token;

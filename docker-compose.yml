@@ -1,0 +1,12 @@
+version: '3'
+services:
+  react-app:
+    build:
+      context: . # Dockerfile'ın olduğu dizin
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173" # Dış dünyada 3000 portunu kullanarak React uygulamasını yayınla
+    volumes:
+      - ./src:/app/src # Kaynak kodunu canlı izleme için bağlayın
+    environment:
+      - NODE_ENV=development # Ortam değişkenleri ayarlayabilirsiniz

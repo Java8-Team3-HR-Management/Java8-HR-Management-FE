@@ -30,7 +30,7 @@ const Profile = () => {
     };
     axios
       .post(
-        `http://localhost/debt/debt-request/${accessToken}`,
+        `http://34.163.83.48/debt/debt-request/${accessToken}`,
         debt
       )
       .then((res) => {
@@ -75,7 +75,7 @@ const Profile = () => {
     };
     axios
       .post(
-        `http://localhost/vacation/create-vacation/${accessToken}`,
+        `http://34.163.83.48/vacation/create-vacation/${accessToken}`,
         vacation
       )
       .then((res) => {
@@ -100,7 +100,7 @@ const Profile = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost/user/getEmployeeByAuthId/${id}`)
+      .get(`http://34.163.83.48/user/getEmployeeByAuthId/${id}`)
       .then((res) => {
         setProfile(res.data);
       })

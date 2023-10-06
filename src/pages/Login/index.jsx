@@ -41,7 +41,7 @@ const Login = () => {
       };
     }
     axios
-      .post("http://localhost/auth/login", login)
+      .post("http://34.163.83.48/auth/login", login)
       .then((res) => {
         console.log(res.data);
         const token = res.data.token;

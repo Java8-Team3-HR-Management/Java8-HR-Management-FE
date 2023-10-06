@@ -17,7 +17,7 @@ const App = () => {
     Cookies.set("decodeRole", decode.role);
     Cookies.set("decodeId", decode.id);
     axios
-      .get(`http://localhost/user/getEmployeeByAuthId/${decode.id}`)
+      .get(`http://34.163.83.48/user/getEmployeeByAuthId/${decode.id}`)
       .then((res) => {
         var user = res.data;
         Cookies.set("username", user.name + " " + user.surname);
