@@ -82,7 +82,7 @@ const Employee = () => {
 
     if (validateForm(auth)) {
       axios
-        .post("http://localhost/auth/createEmployee", auth)
+        .post("http://34.163.83.48/auth/createEmployee", auth)
         .then((res) => {
           console.log(res.data);
           setCount(count + 1);
@@ -97,7 +97,7 @@ const Employee = () => {
 
     if (searchTerm === "") {
       axios
-        .get(`http://localhost/user/findAllEmployee/${companyId}`)
+        .get(`http://34.163.83.48/user/findAllEmployee/${companyId}`)
         .then((res) => setEmployees(res.data));
     } else {
       const filteredEmployees = employees.filter((employee) =>
@@ -109,7 +109,7 @@ const Employee = () => {
   useEffect(() => {
     console.log(companyId);
     axios
-      .get(`http://localhost/user/findAllEmployee/${companyId}`)
+      .get(`http://34.163.83.48/user/findAllEmployee/${companyId}`)
       .then((res) => setEmployees(res.data))
       .catch((error) => {
         if (error.response) {

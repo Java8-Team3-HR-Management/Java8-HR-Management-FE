@@ -14,7 +14,7 @@ const Expense = () => {
     const updatedExpense = { ...expense, approvalStatus: newStatus };
     axios
       .put(
-        `http://localhost/expense/approval-expense/${accessToken}`,
+        `http://34.163.83.48/expense/approval-expense/${accessToken}`,
         updatedExpense,
         {
           headers: {
@@ -47,7 +47,7 @@ const Expense = () => {
 
     if (searchTerm === "") {
       axios
-        .get(`http://localhost/expense/get-all-expense/${companyId.toString()}`)
+        .get(`http://34.163.83.48/expense/get-all-expense/${companyId.toString()}`)
         .then((res) => setExpense(res.data));
     } else {
       const filteredExpens = expense.filter((expense) =>
@@ -59,7 +59,7 @@ const Expense = () => {
   useEffect(() => {
     console.log(role);
     axios
-      .get(`http://localhost/expense/get-all-expense/${companyId.toString()}`)
+      .get(`http://34.163.83.48/expense/get-all-expense/${companyId.toString()}`)
       .then((res) => {
         setExpense(res.data);
       })

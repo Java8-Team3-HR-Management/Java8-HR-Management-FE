@@ -17,7 +17,7 @@ const Register = () => {
     passwordConfirm: e.target.rePassword.value,
    }
     axios
-      .post("http://localhost/auth/register", guest)
+      .post("http://34.163.83.48/auth/register", guest)
       .then((res) => {console.log(res.data);
        
           setTimeout(() => {

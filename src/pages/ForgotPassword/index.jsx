@@ -11,7 +11,7 @@ const ForgotPassword = () => {
     const email = e.target.email.value;
     console.log(email);
     axios
-      .post(`http://localhost/auth/forgot-password/${email}`)
+      .post(`http://34.163.83.48/auth/forgot-password/${email}`)
       .then((res) => {
         console.log(res.data);
         setEmailError(false);

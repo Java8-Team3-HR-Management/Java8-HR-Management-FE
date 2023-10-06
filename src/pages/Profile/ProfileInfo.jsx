@@ -42,7 +42,7 @@ const ProfileInfo = ({ profile }) => {
     };
     axios
       .put(
-        `http://localhost/user/updateEmployee`,
+        `http://34.163.83.48/user/updateEmployee`,
         profileInfo
       )
       .then((res) => {

@@ -58,7 +58,7 @@ const Review = () => {
     };
 
     axios
-      .post(`http://localhost/comment/add-comment/${accessToken}`, comment)
+      .post(`http://34.163.83.48/comment/add-comment/${accessToken}`, comment)
       .then((res) => {
         setCount(count + 1);
       })
@@ -71,20 +71,20 @@ const Review = () => {
     if (role === "EMPLOYEE") {
       setSelectedCompanyId(companyId);
     }
-    axios.get("http://localhost/company/get-all-company").then((res) => {
+    axios.get("http://34.163.83.48/company/get-all-company").then((res) => {
       setComapnys(res.data);
     });
 
     axios
       .get(
-        `http://localhost/comment/get-all-approved-comment/${selectedCompanyId}`
+        `http://34.163.83.48/comment/get-all-approved-comment/${selectedCompanyId}`
       )
       .then((res) => {
         setComments(res.data);
       });
     axios
       .get(
-        `http://localhost/company/get-company-avg-rate/${selectedCompanyId}`
+        `http://34.163.83.48/company/get-company-avg-rate/${selectedCompanyId}`
       )
       .then((res) => {
         setAvgRate(res.data);

@@ -54,7 +54,7 @@ const AddCompany = () => {
       };
 
       axios
-        .post("http://localhost/company/add-company", company)
+        .post("http://34.163.83.48/company/add-company", company)
         .then((res) => {
           setCount(count + 1);
           handleCloseModal();
@@ -69,7 +69,7 @@ const AddCompany = () => {
     const updatedCompany = { ...company, status: newStatus };
     axios
       .put(
-        `http://localhost/company/update-company`,
+        `http://34.163.83.48/company/update-company`,
         updatedCompany
       )
       .then((res) => {
@@ -133,7 +133,7 @@ const AddCompany = () => {
         phone: managerFormData.phone,
       };
 
-      axios.post("http://localhost/auth/createManager", manager).then((res) => {
+      axios.post("http://34.163.83.48/auth/createManager", manager).then((res) => {
         console.log(res.data);
         setCount(count + 1);
       });
@@ -192,7 +192,7 @@ const AddCompany = () => {
     const searchTerm = e.target.value.toLowerCase();
 
     if (searchTerm === "") {
-      axios.get(`http://localhost/company/get-all-company`).then((res) => {
+      axios.get(`http://34.163.83.48/company/get-all-company`).then((res) => {
         setCompanys(res.data);
       });
     } else {
@@ -204,7 +204,7 @@ const AddCompany = () => {
   };
   // Şirket verilerini çekme
   useEffect(() => {
-    axios.get(`http://localhost/company/get-all-company`).then((res) => {
+    axios.get(`http://34.163.83.48/company/get-all-company`).then((res) => {
       setCompanys(res.data);
     });
   }, [count]);

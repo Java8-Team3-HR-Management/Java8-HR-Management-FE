@@ -17,7 +17,7 @@ const AdminRegister = () => {
     console.log(admin);
     if (admin.password === rePassword) {
       axios
-        .post("http://localhost/auth/createAdmin", admin)
+        .post("http://34.163.83.48/auth/createAdmin", admin)
         .then((res) => {
           console.log(res.data);
           console.log("İşlem başarılı");

@@ -123,7 +123,7 @@ const Company = () => {
     };
     console.log(update);
     // axios
-    //   .put(`http://localhost/vacation/update-vacation/${accessToken}`, update, {
+    //   .put(`http://34.163.83.48/vacation/update-vacation/${accessToken}`, update, {
     //     headers: {
     //       Authorization: `Bearer ${accessToken}`,
     //     },
@@ -144,7 +144,7 @@ const Company = () => {
     };
     console.log(update);
     axios
-      .put(`http://localhost/vacation/update-vacation/${accessToken}`, update, {
+      .put(`http://34.163.83.48/vacation/update-vacation/${accessToken}`, update, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -160,7 +160,7 @@ const Company = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost/vacation/find-all-vacation-pending`)
+      .get(`http://34.163.83.48/vacation/find-all-vacation-pending`)
       .then((res) => {
         setVacations(res.data);
       })
@@ -168,7 +168,7 @@ const Company = () => {
         console.error("Onay bekleyen izinler alınamadı:", error);
       });
     axios
-      .get(`http://localhost/debt/alldebts`)
+      .get(`http://34.163.83.48/debt/alldebts`)
       .then((res) => {
         setDebts(res.data);
         console.log(res.data);

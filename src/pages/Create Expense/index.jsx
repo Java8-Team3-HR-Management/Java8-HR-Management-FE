@@ -20,7 +20,7 @@ const CreateExpense = () => {
     console.log(accessToken);
     console.log(expense);
     axios
-    .post(`http://localhost/expense/create-expense/${accessToken}`,expense)
+    .post(`http://34.163.83.48/expense/create-expense/${accessToken}`,expense)
     .then((res) => {
       setUser(res.data);
       console.log(res.data);
@@ -46,7 +46,7 @@ const CreateExpense = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost/user/getEmployeeByAuthId/${id}`)
+      .get(`http://34.163.83.48/user/getEmployeeByAuthId/${id}`)
       .then((res) => {
         setUser(res.data);
         console.log(res.data);
