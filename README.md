@@ -20,6 +20,7 @@
 
 <p align="center">
   <a href="#dart-about">About</a> &#xa0; | &#xa0; 
+  <a href="#globe_with_meridians-usage">Usage</a> &#xa0; | &#xa0; 
   <a href="#sparkles-pages-and-features">Features</a> &#xa0; | &#xa0;
   <a href="#rocket-technologies">Technologies</a> &#xa0; | &#xa0;
   <a href="#white_check_mark-requirements">Requirements</a> &#xa0; | &#xa0;
@@ -66,7 +67,7 @@ This HR Management React Project is designed to streamline and simplify human re
 
 - **Subscription**: Manage subscription and membership details.
 
-## Usage
+## :globe_with_meridians: Usage
 
 To use the different pages and features of the project:
 
