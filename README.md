@@ -1,5 +1,5 @@
 <div align="center" id="top"> 
-  <img src="./.github/app.gif" alt="Hr Ms Fe" />
+  <img src="/src/Diagram/Project-Diagram.png" alt="Hr Ms Fe" />
 
   &#xa0;
 
